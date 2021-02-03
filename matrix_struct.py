@@ -59,6 +59,17 @@ def init_matrix(size: int):
     return matrix
 
 
+def get_sqr(row: int, col: int, matrix: Matrix) -> Square:
+    """
+    returns a square given its location on the matrix
+    :param row: row of the square
+    :param col: column location
+    :param matrix: matrix containing the board
+    :return: a square
+    """
+
+    return matrix.board[row][col]
+
 def get_left(sqr: Square, matrix: Matrix) -> Square or None:
     """
     function to access the square to the left of the given Square
