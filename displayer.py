@@ -1,5 +1,6 @@
 import turtle
 from matrix_struct import *
+from game import *
 """
 file that takes care of displaying game board 
 """
@@ -11,14 +12,14 @@ PADDING = 50
 # space between blocks and window margin
 SPACE = 5
 
-def init(matrix: Matrix):
+def init(game: Game):
     """
     initializes the game window to the necessary measurements
     :param matrix: the matrix representing the game
     :return: None
     """
-
-    turtle.tracer(10, 10)
+    matrix = game.matrix
+    turtle.tracer(20, 10)
 
     # size the window so all blocks can fit
     width = (matrix.size * SQR_SIZE) + PADDING
@@ -35,6 +36,9 @@ def init(matrix: Matrix):
     for row in range(matrix.size):
         for col in range(matrix.size):
             draw_sqaure(matrix.board[row][col])
+
+    turtle.goto(0, 730)
+    turtle.write(game.player, font=("Courier", 25, 'normal'))
 
     turtle.done()
 
@@ -53,7 +57,7 @@ def draw_sqaure(sqr: Square):
     # turtle.setheading(0)
 
     # set the color
-    turtle.color(sqr.content)
+    turtle.color('black', sqr.content)
     turtle.down()
     turtle.begin_fill()
     for i in range(4):
@@ -61,8 +65,6 @@ def draw_sqaure(sqr: Square):
         turtle.left(90)
     turtle.end_fill()
 
-    # make sure to return to start position
-    # turtle.goto(0, 0)
 
 # test main function TODO: remove this
 # def main():

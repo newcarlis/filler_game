@@ -8,7 +8,14 @@ this is the main game file that communicates with the user the handles the game 
 
 COLORS = ["#ffc700", "#7db954", "#fac4c4", "#ff284b", "#afddd5", "#ffb27b"]
 
-def game_init():
+
+@dataclass
+class Game:
+    player: str
+    matrix: Matrix
+
+
+def game_init() -> Game:
     """
     crates new game and initializes a game board for the user
     :return: created matrix
@@ -31,7 +38,8 @@ def game_init():
     matrix = init_matrix(size)
     # populate it
     matrix = populate(matrix)
-    return matrix
+    game = Game(user_name, matrix)
+    return game
 
 
 def populate(matrix: Matrix) -> Matrix:
@@ -56,13 +64,13 @@ def get_color():
     :return: color
     """
     num = random.randint(0, len(COLORS)-1)
-    print(num)
     return COLORS[num]
 
 
 def main():
     matrix = game_init()
     displayer.init(matrix)
+
 
 
 if __name__ == '__main__':
