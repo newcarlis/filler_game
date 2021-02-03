@@ -4,44 +4,42 @@ from matrix_struct import *
 file that takes care of displaying game board 
 """
 
+# each block in the game is expected to be 30 pixels
+BLOCK_SIZE = 30
+# padding space to compensate for space taken by window
+PADDING = 50
+# space between blocks and window margin
+SPACE = 10
 
 def init(matrix: Matrix):
-    # each square is going to be 30 pixels
-    width = matrix.size * 100
-    height = width + 200
+    """
+    initializes the game window to the necessary measurements
+    :param matrix: the matrix representing the game
+    :return: None
+    """
+
+    # size the window so all blocks can fit
+    width = (matrix.size * BLOCK_SIZE) + PADDING
+    height = (matrix.size * BLOCK_SIZE) + PADDING
+
+    # define the game window
+    game_window = turtle.Screen()
+    game_window.setup(width, height)
+
+    # place the center of the screen in the bottom left
+    game_window.setworldcoordinates(-SPACE, -SPACE, width, height)
 
 
-
-    turtle.setup(width, height)
-    turtle.setpos(0, 0)
-
-    for row in range(matrix.size):
-        for col in range(matrix.size):
-            draw_square(matrix.board[row][col])
-
-
-def draw_square(sqr: Square):
-    turtle.up()
-    turtle.goto(sqr.row * 30, sqr.col * 30)
-    turtle.setheading(0)
-
-    turtle.color(sqr.content)
-    turtle.down()
-    turtle.begin_fill()
-    for i in range(4):
-        turtle.forward(30)
-        turtle.right(90)
-    turtle.end_fill()
-
-
-
-
-
+# test main function
 def main():
     matrix = init_matrix(4)
     turtle.speed(0)
     # print(matrix)
     init(matrix)
+    turtle.done()
 
 
 main()
+
+
+
