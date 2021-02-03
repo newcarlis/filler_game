@@ -1,9 +1,11 @@
 from dataclasses import dataclass
 from matrix_struct import *
+import random
 """
 this is the main game file that communicates with the user the handles the game logistics
 """
 
+COLORS = ["#ffc700", "#7db954", "#fac4c", "#ff284b", "#afddd5", "#ffb27b"]
 
 def game_init():
     """
@@ -26,6 +28,29 @@ def game_init():
 
     # create matrix
     matrix = init_matrix(size)
+
+
+def populate(matrix: Matrix):
+    """
+    populates the matrix with random colors
+    :param matrix: the given matrix
+    :return: TODO
+    """
+
+    for col in range(matrix.board):
+        for row in range(matrix.board):
+            sqr = get_sqr(row, col, matrix)
+            sqr.content = get_color()
+
+
+def get_color():
+    """
+    returns a randomly generated color from the COLORS list
+    :return: color
+    """
+    num = random.randint(0, len(COLORS))
+    return COLORS[num]
+
 
 def main():
     game_init()

@@ -70,6 +70,7 @@ def get_sqr(row: int, col: int, matrix: Matrix) -> Square:
 
     return matrix.board[row][col]
 
+
 def get_left(sqr: Square, matrix: Matrix) -> Square or None:
     """
     function to access the square to the left of the given Square
