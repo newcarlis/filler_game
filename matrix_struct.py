@@ -31,7 +31,7 @@ def init_Square(row: int, col: int, ) -> Square:
     :param col: y location
     :return: the created tile
     """
-    sqr = Square(row, col, 'red')
+    sqr = Square(row, col, "")
     # print(row, "---", col)
     # print(sqr)
     return sqr

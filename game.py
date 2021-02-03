@@ -1,16 +1,17 @@
 from dataclasses import dataclass
 from matrix_struct import *
 import random
+import displayer
 """
 this is the main game file that communicates with the user the handles the game logistics
 """
 
-COLORS = ["#ffc700", "#7db954", "#fac4c", "#ff284b", "#afddd5", "#ffb27b"]
+COLORS = ["#ffc700", "#7db954", "#fac4c4", "#ff284b", "#afddd5", "#ffb27b"]
 
 def game_init():
     """
     crates new game and initializes a game board for the user
-    :return: TODO: figure this out
+    :return: created matrix
     """
 
     # welcome the user and setup board size
@@ -28,19 +29,25 @@ def game_init():
 
     # create matrix
     matrix = init_matrix(size)
+    # populate it
+    matrix = populate(matrix)
+    return matrix
 
 
-def populate(matrix: Matrix):
+def populate(matrix: Matrix) -> Matrix:
     """
     populates the matrix with random colors
     :param matrix: the given matrix
-    :return: TODO
+    :return: populated matrix
     """
 
-    for col in range(matrix.board):
-        for row in range(matrix.board):
+    for row in range(matrix.size):
+        for col in range(matrix.size):
             sqr = get_sqr(row, col, matrix)
             sqr.content = get_color()
+
+    # return the populated matrix
+    return matrix
 
 
 def get_color():
@@ -48,12 +55,14 @@ def get_color():
     returns a randomly generated color from the COLORS list
     :return: color
     """
-    num = random.randint(0, len(COLORS))
+    num = random.randint(0, len(COLORS)-1)
+    print(num)
     return COLORS[num]
 
 
 def main():
-    game_init()
+    matrix = game_init()
+    displayer.init(matrix)
 
 
 if __name__ == '__main__':

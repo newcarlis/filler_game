@@ -31,11 +31,12 @@ def init(matrix: Matrix):
     # place the center of the screen in the bottom left
     game_window.setworldcoordinates(-SPACE, -SPACE, width, height)
 
-
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
         for col in range(matrix.size):
             draw_sqaure(matrix.board[row][col])
+
+    turtle.done()
 
 def draw_sqaure(sqr: Square):
     """
@@ -64,14 +65,14 @@ def draw_sqaure(sqr: Square):
     # turtle.goto(0, 0)
 
 # test main function TODO: remove this
-def main():
-    matrix = init_matrix(10)
-    init(matrix)
-    turtle.mainloop()
-    turtle.done()
-
-
-main()
+# def main():
+#     matrix = init_matrix(10)
+#     init(matrix)
+#     turtle.mainloop()
+#     turtle.done()
+#
+#
+# main()
 
 
 
