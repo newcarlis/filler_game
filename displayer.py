@@ -8,9 +8,14 @@ file that takes care of displaying game board
 # each square in the game is expected to be 30 pixels
 SQR_SIZE = 30
 # padding space to compensate for space taken by window
-PADDING = 50
-# space between blocks and window margin
-SPACE = 2
+PADDING = 20
+# space between blocks and window margin (Horizontally)
+H_OFFSET = -5
+# space between blocks and window margin (Vertical)
+V_OFFSET = -15
+# space taken by the color menu
+COLOR_SPACE = 100
+# this how much space the player info section is going to take
 
 def init(game: Game):
     """
@@ -22,16 +27,16 @@ def init(game: Game):
     turtle.tracer(50, 50)
 
     # size the window so all blocks can fit
-    width = (matrix.size * SQR_SIZE) + PADDING + 50
+    width = (matrix.size * SQR_SIZE) + PADDING
     height = (matrix.size * SQR_SIZE) + PADDING
 
-    # define the game window
-    game_window = turtle.Screen()
-    game_window.bgcolor('#9d9d9d')
-    game_window.setup(width, height)
+    print("width: ", width, "\nheight: ", height, "\nspace for squares: ", matrix.size * SQR_SIZE)
 
-    # place the center of the screen in the bottom left
-    game_window.setworldcoordinates(2, -SPACE, width, height)
+    turtle.bgcolor('#9d9d9d')
+
+    # turtle.setworldcoordinates(-10, -50, width, height - 50)
+    turtle.Screen().setup(width,height)
+    turtle.Screen().setworldcoordinates(H_OFFSET, V_OFFSET, width + H_OFFSET, height + V_OFFSET)
 
     turtle.hideturtle()
 
@@ -40,13 +45,13 @@ def init(game: Game):
         for col in range(matrix.size):
             draw_sqaure(matrix.board[row][col])
 
-    turtle.up()
-    turtle.goto(0, (matrix.size * SQR_SIZE) + 5)
-    turtle.color("black")
-    turtle.write(game.player, font=("Courier", 25, 'normal'))
+    # turtle.up()
+    # turtle.goto(0, (matrix.size * SQR_SIZE) + 5)
+    # turtle.color("black")
+    # turtle.write(game.player, font=("Courier", 25, 'normal'))
 
     turtle.up()
-    color_menu(matrix)
+    # color_menu(matrix)
 
     turtle.done()
 
