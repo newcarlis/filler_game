@@ -69,7 +69,6 @@ def init(game: Game):
     turtle.up()
     color_menu(matrix)
 
-    turtle.done()
 
 def draw_sqaure(sqr: Square):
     """
@@ -130,6 +129,22 @@ def color_menu(matrix: Matrix):
 
         turtle.up()
         turtle.forward(color_spacing + SQR_SIZE)
+
+
+def generate_coords(x: int, y: int) -> tuple:
+    """
+    this generates coordinates. The coordinates are given by a click on the canvas,
+    and they are returned as a tuple for further use
+    :param x: x coord of click
+    :param y: y coord of click
+    :return: tuple(x,y)
+    """
+    return x, y
+
+
+def check(x, y):
+    turtle.bgcolor("red")
+    print("this is x: ", x, "this is y: ", y)
 
 
 

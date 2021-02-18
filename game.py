@@ -67,10 +67,25 @@ def get_color():
     return COLORS[num]
 
 
-def main():
-    matrix = game_init()
-    displayer.init(matrix)
+def won(game: Game):
+    """
+    veryfies that all the colors are the same; in that case the player has won
+    :param game: current game
+    :return: True if all colors are the same:: False otherwise
+    """
+    # set current color to the first color found
+    current_color = game.matrix.board[0][0].content
 
+    for s1 in range(game.matrix.size):
+        for s2 in range(game.matrix.size):
+            if game.matrix.board[s1][s2] != current_color:
+                return False
+    return True
+
+
+def main():
+    game = game_init()
+    displayer.init(game)
 
 
 if __name__ == '__main__':
