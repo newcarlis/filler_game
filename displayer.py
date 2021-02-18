@@ -85,7 +85,7 @@ def draw_sqaure(sqr: Square):
     # turtle.setheading(0)
 
     # set the color
-    turtle.color(sqr.content)
+    turtle.color(sqr.color)
     turtle.down()
     turtle.begin_fill()
     for i in range(4):

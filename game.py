@@ -1,12 +1,10 @@
-from dataclasses import dataclass
+import turtle
+
 from matrix_struct import *
-import random
 import displayer
 """
 this is the main game file that communicates with the user the handles the game logistics
 """
-
-COLORS = ["#ffc700", "#7db954", "#fac4c4", "#ff284b", "#afddd5", "#ffb27b"]
 
 
 @dataclass
@@ -36,56 +34,40 @@ def game_init() -> Game:
 
     # create matrix
     matrix = init_matrix(size)
-    # populate it
-    matrix = populate(matrix)
+    # create game
     game = Game(user_name, matrix)
     return game
 
 
-def populate(matrix: Matrix) -> Matrix:
-    """
-    populates the matrix with random colors
-    :param matrix: the given matrix
-    :return: populated matrix
-    """
-
-    for row in range(matrix.size):
-        for col in range(matrix.size):
-            sqr = get_sqr(row, col, matrix)
-            sqr.content = get_color()
-
-    # return the populated matrix
-    return matrix
-
-
-def get_color():
-    """
-    returns a randomly generated color from the COLORS list
-    :return: color
-    """
-    num = random.randint(0, len(COLORS)-1)
-    return COLORS[num]
-
-
-def won(game: Game):
+def won(game: Game) -> bool:
     """
     veryfies that all the colors are the same; in that case the player has won
     :param game: current game
     :return: True if all colors are the same:: False otherwise
     """
     # set current color to the first color found
-    current_color = game.matrix.board[0][0].content
+    current_color = game.matrix.board[0][0].color
 
+    # check all the squares and their color
     for s1 in range(game.matrix.size):
         for s2 in range(game.matrix.size):
-            if game.matrix.board[s1][s2] != current_color:
+            if game.matrix.board[s1][s2].color != current_color:
                 return False
     return True
+
+
+def update_board(game: Game, color: str):
+
+    # start at the bottom left corner
+
+    # move in every direction and check if the colors match
+    return False
 
 
 def main():
     game = game_init()
     displayer.init(game)
+    turtle.done()
 
 
 if __name__ == '__main__':
