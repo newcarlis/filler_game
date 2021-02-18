@@ -45,7 +45,6 @@ def init_matrix(size: int):
     :return: the created matrix
     """
     board = []
-    print(board)
 
     # initializing individual squares
     for row in range(size):
@@ -55,7 +54,6 @@ def init_matrix(size: int):
         board.append(sub)
 
     matrix = Matrix(size, board)
-    print(board)
     return matrix
 
 
