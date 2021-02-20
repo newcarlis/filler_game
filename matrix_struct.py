@@ -40,9 +40,14 @@ def init_square(row: int, col: int, ) -> Square:
     :param col: y location
     :return: the created tile
     """
-    sqr = Square(row, col, get_color(), False)
-    # print(row, "---", col)
-    # print(sqr)
+    sqr = None
+    # set the very first tile as active.
+    # this is the square that the player starts with
+    if row == 0 and col == 0:
+        sqr = Square(row, col, get_color(), True)
+    else:
+        sqr = Square(row, col, get_color(), False)
+
     return sqr
 
 
@@ -94,11 +99,11 @@ def get_left(sqr: Square, matrix: Matrix) -> Square or None:
     :return: square to the left
     """
 
-    if sqr.row == 0:
+    if sqr.col == 0:
         return None
 
-    row = sqr.row - 1
-    col = sqr.col
+    row = sqr.row
+    col = sqr.col - 1
     return matrix.board[row][col]
 
 
@@ -110,11 +115,11 @@ def get_right(sqr: Square, matrix: Matrix) -> Square or None:
     :return: square to the right
     """
 
-    if sqr.row == matrix.size - 1:
+    if sqr.col == matrix.size - 1:
         return None
 
-    row = sqr.row + 1
-    col = sqr.col
+    row = sqr.row
+    col = sqr.col + 1
     return matrix.board[row][col]
 
 
@@ -126,11 +131,11 @@ def get_top(sqr: Square, matrix: Matrix) -> Square or None:
     :return: square above
     """
 
-    if sqr.col == 0:
+    if sqr.row == 0:
         return None
 
-    row = sqr.row
-    col = sqr.col - 1
+    row = sqr.row - 1
+    col = sqr.col
     return matrix.board[row][col]
 
 
@@ -145,8 +150,8 @@ def get_bottom(sqr: Square, matrix: Matrix) -> Square or None:
     if sqr.row == matrix.size - 1:
         return None
 
-    row = sqr.row
-    col = sqr.col + 1
+    row = sqr.row + 1
+    col = sqr.col
     return matrix.board[row][col]
 
 
