@@ -29,8 +29,8 @@ INFO_PADD_2 = -100
 def init(game: Game):
     """
     initializes the game window to the necessary measurements
-    :param matrix: the matrix representing the game
-    :return: None
+    :param game: the game
+    :return: game
     """
     # matrix in use during the game
     matrix = game.matrix
@@ -54,7 +54,7 @@ def init(game: Game):
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
         for col in range(matrix.size):
-            draw_sqaure(matrix.board[row][col])
+            draw_square(matrix.board[row][col])
 
     # draw the player info section
     turtle.up()
@@ -67,10 +67,12 @@ def init(game: Game):
     set_moves(matrix)
 
     turtle.up()
-    color_menu(matrix)
+    turtle.home()
+    game = color_menu(game)
+    return game
 
 
-def draw_sqaure(sqr: Square):
+def draw_square(sqr: Square):
     """
     used the information associated with the square to draw it on the board
     :param sqr: the square to be drawn
@@ -93,6 +95,7 @@ def draw_sqaure(sqr: Square):
         turtle.left(90)
     turtle.end_fill()
 
+
 def set_moves(matrix: Matrix):
     """
     updates the number of moves as the player plays.
@@ -104,22 +107,33 @@ def set_moves(matrix: Matrix):
     turtle.color("black")
     turtle.write("Moves: 200", font=("Courier", 12, 'normal'))
 
-def color_menu(matrix: Matrix):
+
+def color_menu(game: Game):
     """
     Creates the color menu to the right of the board.
     equally spaces the colors so it looks neat
-    :param matrix: the current matrix used
-    :return: NONE
+    :param game: the current game used
+    :return: the list of color items
     """
+    matrix = game.matrix
     # this determines where to place the color blocks so they are evenly spaced
     color_spacing = ((matrix.size * SQR_SIZE) - (len(COLORS) * SQR_SIZE)) / (len(COLORS) - 1)
     padding = (COLOR_SPACE - SQR_SIZE) / 2
     turtle.goto((matrix.size * SQR_SIZE + padding), matrix.size * SQR_SIZE)
 
+    # point down before drawing each
     turtle.setheading(270)
+
+    # the list containing the locations of all colors
+    color_map = []
 
     for color in COLORS:
         turtle.color('black', color)
+
+        # create the color item and store it
+        the_color = ColorItem(turtle.xcor(), turtle.ycor(), color)
+        color_map.append(the_color)
+
         turtle.down()
         turtle.begin_fill()
         for i in range(4):
@@ -130,21 +144,37 @@ def color_menu(matrix: Matrix):
         turtle.up()
         turtle.forward(color_spacing + SQR_SIZE)
 
+    game.color_map = color_map
+    return game
 
-def generate_coords(x: int, y: int) -> tuple:
+
+def set_coords(x: float, y: float):
     """
-    this generates coordinates. The coordinates are given by a click on the canvas,
-    and they are returned as a tuple for further use
+    makes the turtle go to the clicked location so we can access it
     :param x: x coord of click
     :param y: y coord of click
-    :return: tuple(x,y)
+    :return: None
     """
-    return x, y
 
-
-def check(x, y):
-    turtle.bgcolor("red")
+    turtle.up()
+    turtle.goto(x, y)
     print("this is x: ", x, "this is y: ", y)
+
+
+def accept_move(coord: tuple, color_map: [ColorItem]):
+    """
+    accepts moves or 'clicks' from the user
+    verifies if the coord of the click corresponds with a color
+    :param coord: the coord of click from plater
+    :param color_map: the list containing the color locations
+    :return: color
+    """
+    # print("the current position is (", coord[0], " , ", coord[1], ")")
+    for item in color_map:
+        # if the x coord is within the first item
+        if item.row < coord[0] < (item.row + SQR_SIZE):
+            if item.col < coord[1] < (item.col + SQR_SIZE):
+                print("This is the color: ", item.color)
 
 
 

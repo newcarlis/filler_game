@@ -7,6 +7,11 @@ import random
 
 COLORS = ["#ffc700", "#7db954", "#fac4c4", "#ff284b", "#afddd5", "#ffb27b"]
 
+@dataclass
+class ColorItem:
+    row: float
+    col: float
+    color: str
 
 @dataclass
 class Square:

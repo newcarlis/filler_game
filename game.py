@@ -11,6 +11,7 @@ this is the main game file that communicates with the user the handles the game 
 class Game:
     player: str
     matrix: Matrix
+    color_map: []
 
 
 def game_init() -> Game:
@@ -35,7 +36,7 @@ def game_init() -> Game:
     # create matrix
     matrix = init_matrix(size)
     # create game
-    game = Game(user_name, matrix)
+    game = Game(user_name, matrix, None)
     return game
 
 
@@ -56,6 +57,15 @@ def won(game: Game) -> bool:
     return True
 
 
+def play(game: Game):
+    """
+    this is where the game starts and takes user input
+    :param game: the game being used
+    :return: TODO
+    """
+    turtle.onscreenclick(lambda x, y: displayer.accept_move((x, y), game.color_map))
+
+
 def update_board(game: Game, color: str):
 
     # start at the bottom left corner
@@ -66,7 +76,9 @@ def update_board(game: Game, color: str):
 
 def main():
     game = game_init()
-    displayer.init(game)
+    game = displayer.init(game)
+    play(game)
+
     turtle.done()
 
 
