@@ -54,7 +54,7 @@ def init(game: Game):
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
         for col in range(matrix.size):
-            draw_square(matrix.board[row][col])
+            draw_square(matrix.board[row][col], (matrix.size - 1) * SQR_SIZE)
 
     # draw the player info section
     turtle.up()
@@ -72,7 +72,7 @@ def init(game: Game):
     return game
 
 
-def draw_square(sqr: Square):
+def draw_square(sqr: Square, total: int):
     """
     used the information associated with the square to draw it on the board
     :param sqr: the square to be drawn
@@ -80,7 +80,11 @@ def draw_square(sqr: Square):
     """
 
     turtle.up()
-    turtle.goto(sqr.row * SQR_SIZE, sqr.col * SQR_SIZE)
+    # convert the coords (0-7..15..24) to scale
+    # EX: sqr with coords has the position (0, height of matrix)
+    x = (sqr.col * SQR_SIZE)
+    y = total - (sqr.row * SQR_SIZE)
+    turtle.goto(x, y)
 
     # code to draw a square
     # make sure the turtle is pointing east
@@ -161,7 +165,7 @@ def set_coords(x: float, y: float):
     print("this is x: ", x, "this is y: ", y)
 
 
-def accept_move(coord: tuple, color_map: [ColorItem]):
+def accept_move(coord: tuple, game: Game):
     """
     accepts moves or 'clicks' from the user
     verifies if the coord of the click corresponds with a color
@@ -169,12 +173,14 @@ def accept_move(coord: tuple, color_map: [ColorItem]):
     :param color_map: the list containing the color locations
     :return: color
     """
-    # print("the current position is (", coord[0], " , ", coord[1], ")")
+    color_map = game.color_map
     for item in color_map:
         # if the x coord is within the first item
         if item.row < coord[0] < (item.row + SQR_SIZE):
             if item.col < coord[1] < (item.col + SQR_SIZE):
                 print("This is the color: ", item.color)
+
+                update_board(game, item.color)
 
 
 
