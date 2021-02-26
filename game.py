@@ -63,21 +63,52 @@ def play(game: Game):
     :param game: the game being used
     :return: TODO
     """
-    turtle.onscreenclick(lambda x, y: displayer.accept_move((x, y), game.color_map))
+    turtle.onscreenclick(lambda x, y: displayer.accept_move((x, y), game))
 
 
 def update_board(game: Game, color: str):
 
-    # start at the bottom left corner
+    # start at the top left corner
+    start_x = 0
+    start_y = 0
+    board = game.matrix.board
 
-    # move in every direction and check if the colors match
-    return False
+    # traverse the matrix using the rows
+
+
+    # return False
+
+def gather_adj(matrix: Matrix, sqr: Square):
+    adj = []  # list that will contain all of the adjacent squares
+
+    # get the left adjacent square
+    temp_sqr = get_left(sqr, matrix)
+    if isinstance(temp_sqr, Square):
+        adj.append(temp_sqr)
+
+    # get the right adjacent square
+    temp_sqr = get_right(sqr, matrix)
+    if isinstance(temp_sqr, Square):
+        adj.append(temp_sqr)
+
+    # get the top adjacent square
+    temp_sqr = get_top(sqr, matrix)
+    if isinstance(temp_sqr, Square):
+        adj.append(temp_sqr)
+
+    # get the bottom adjacent square
+    temp_sqr = get_bottom(sqr, matrix)
+    if isinstance(temp_sqr, Square):
+        adj.append(temp_sqr)
+
+    return adj
 
 
 def main():
     game = game_init()
     game = displayer.init(game)
-    play(game)
+    print(gather_adj(game.matrix, game.matrix.board[1][1]))
+    # play(game)
 
     turtle.done()
 

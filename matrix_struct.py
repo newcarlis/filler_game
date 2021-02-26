@@ -40,13 +40,8 @@ def init_square(row: int, col: int, ) -> Square:
     :param col: y location
     :return: the created tile
     """
-    sqr = None
-    # set the very first tile as active.
-    # this is the square that the player starts with
-    if row == 0 and col == 0:
-        sqr = Square(row, col, get_color(), True)
-    else:
-        sqr = Square(row, col, get_color(), False)
+
+    sqr = Square(row, col, get_color(), False)
 
     return sqr
 
@@ -162,3 +157,11 @@ def get_content(sqr: Square) -> Any:
     :return: Square
     """
     return sqr.color
+
+
+def update_sqr(matrix: Matrix, sqr: Square) -> Matrix:
+    row = sqr.row
+    col = sqr.col
+    matrix.board[row][col] = sqr
+
+    return matrix

@@ -54,7 +54,7 @@ def init(game: Game):
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
         for col in range(matrix.size):
-            draw_square(matrix.board[row][col], (matrix.size - 1) * SQR_SIZE)
+            draw_square(matrix.board[row][col], (matrix.size - 1))
 
     # draw the player info section
     turtle.up()
@@ -69,10 +69,11 @@ def init(game: Game):
     turtle.up()
     turtle.home()
     game = color_menu(game)
+
     return game
 
 
-def draw_square(sqr: Square, total: int):
+def draw_square(sqr: Square, size: int):
     """
     used the information associated with the square to draw it on the board
     :param sqr: the square to be drawn
@@ -81,9 +82,9 @@ def draw_square(sqr: Square, total: int):
 
     turtle.up()
     # convert the coords (0-7..15..24) to scale
-    # EX: sqr with coords has the position (0, height of matrix)
+    # EX: sqr with coords(0,0) has the position (0, height of matrix)
     x = (sqr.col * SQR_SIZE)
-    y = total - (sqr.row * SQR_SIZE)
+    y = (size  * SQR_SIZE) - (sqr.row * SQR_SIZE)
     turtle.goto(x, y)
 
     # code to draw a square
