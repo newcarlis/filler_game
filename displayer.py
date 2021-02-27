@@ -6,7 +6,7 @@ file that takes care of displaying game board
 """
 
 # each square in the game is expected to be 30 pixels
-SQR_SIZE = 20
+SQR_SIZE = 30
 # padding space to compensate for space taken by window
 PADDING = 20
 # space between blocks and window margin (Horizontally)
@@ -35,7 +35,7 @@ def init(game: Game):
     # matrix in use during the game
     matrix = game.matrix
     # makes the turtle draw everything before displaying
-    turtle.tracer(50, 50)
+    turtle.tracer(8, 25)
 
     # size the window so all elements can fit
     width = (matrix.size * SQR_SIZE) + PADDING + COLOR_SPACE
@@ -54,7 +54,7 @@ def init(game: Game):
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
         for col in range(matrix.size):
-            draw_square(matrix.board[row][col], (matrix.size - 1))
+            draw_square(matrix.board[row][col], (matrix.size))
 
     # draw the player info section
     turtle.up()
@@ -84,21 +84,21 @@ def draw_square(sqr: Square, size: int):
     # convert the coords (0-7..15..24) to scale
     # EX: sqr with coords(0,0) has the position (0, height of matrix)
     x = (sqr.col * SQR_SIZE)
-    y = (size  * SQR_SIZE) - (sqr.row * SQR_SIZE)
+    y = (size * SQR_SIZE) - (sqr.row * SQR_SIZE)
     turtle.goto(x, y)
-
     # code to draw a square
-    # make sure the turtle is pointing east
-    # turtle.setheading(0)
+    # make sure the turtle is pointing down
+    turtle.setheading(270)
 
     # set the color
-    turtle.color(sqr.color)
+    turtle.color('black', sqr.color, )
     turtle.down()
     turtle.begin_fill()
-    for i in range(4):
+    for i in range(5):
         turtle.forward(SQR_SIZE)
         turtle.left(90)
     turtle.end_fill()
+    turtle.update()
 
 
 def set_moves(matrix: Matrix):
@@ -178,7 +178,7 @@ def accept_move(coord: tuple, game: Game):
     for item in color_map:
         # if the x coord is within the first item
         if item.row < coord[0] < (item.row + SQR_SIZE):
-            if item.col < coord[1] < (item.col + SQR_SIZE):
+            if (item.col - SQR_SIZE) < coord[1] < item.col:
                 print("This is the color: ", item.color)
 
                 update_board(game, item.color)

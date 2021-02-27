@@ -73,8 +73,7 @@ def update_board(game: Game, color: str):
     start_y = 0
     board = game.matrix.board
 
-    # traverse the matrix using the rows
-
+    check_adjacency(board[0][0], game.matrix, color)
 
     # return False
 
@@ -104,11 +103,40 @@ def gather_adj(matrix: Matrix, sqr: Square):
     return adj
 
 
+def check_adjacency(start: Square, matrix: Matrix, color: str):
+    # queue where all the adjacencies are stored
+    queue = []
+
+    # add the start sqr, add color and activate
+    queue.append(start)
+    start.active = True
+    start.color = color
+    matrix = update_sqr(matrix, start)
+    # update on displayer
+    displayer.draw_square(start, matrix.size)
+    print(start)
+
+    # while len(queue) != 0:
+    #     curr_sqr = queue.pop(0)  # the current sqr to consider
+    #     adj_list = gather_adj(matrix, curr_sqr)  # gather the adj
+    #
+    #     # loop through the list of adjacencies
+    #     for adj in adj_list:
+    #
+    #         # active case
+    #         if adj.active:
+    #             # change color
+    #             adj.color = color
+    #             # update on board
+    #             matrix = update_sqr(matrix, adj)
+    #             # update on displayer
+    #             displayer.draw_square(adj, matrix.size-1)
+
+
 def main():
     game = game_init()
     game = displayer.init(game)
-    print(gather_adj(game.matrix, game.matrix.board[1][1]))
-    # play(game)
+    play(game)
 
     turtle.done()
 
