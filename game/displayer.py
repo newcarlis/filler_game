@@ -1,5 +1,3 @@
-import turtle
-from matrix_struct import *
 from game import *
 """
 file that takes care of displaying game board 
@@ -35,7 +33,7 @@ def init(game: Game):
     # matrix in use during the game
     matrix = game.matrix
     # makes the turtle draw everything before displaying
-    turtle.tracer(8, 25)
+    turtle.tracer(8,50)
 
     # size the window so all elements can fit
     width = (matrix.size * SQR_SIZE) + PADDING + COLOR_SPACE
@@ -49,7 +47,7 @@ def init(game: Game):
     turtle.Screen().setworldcoordinates(H_OFFSET, V_OFFSET, width + H_OFFSET, height + V_OFFSET)
 
     # hide turtle before drawing
-    turtle.hideturtle()
+    # turtle.hideturtle()
 
     # loops trough the matrix board and draws each square
     for row in range(matrix.size):
@@ -94,11 +92,10 @@ def draw_square(sqr: Square, size: int):
     turtle.color('black', sqr.color, )
     turtle.down()
     turtle.begin_fill()
-    for i in range(5):
+    for i in range(4):
         turtle.forward(SQR_SIZE)
         turtle.left(90)
     turtle.end_fill()
-    turtle.update()
 
 
 def set_moves(matrix: Matrix):
@@ -153,35 +150,7 @@ def color_menu(game: Game):
     return game
 
 
-def set_coords(x: float, y: float):
-    """
-    makes the turtle go to the clicked location so we can access it
-    :param x: x coord of click
-    :param y: y coord of click
-    :return: None
-    """
 
-    turtle.up()
-    turtle.goto(x, y)
-    print("this is x: ", x, "this is y: ", y)
-
-
-def accept_move(coord: tuple, game: Game):
-    """
-    accepts moves or 'clicks' from the user
-    verifies if the coord of the click corresponds with a color
-    :param coord: the coord of click from plater
-    :param color_map: the list containing the color locations
-    :return: color
-    """
-    color_map = game.color_map
-    for item in color_map:
-        # if the x coord is within the first item
-        if item.row < coord[0] < (item.row + SQR_SIZE):
-            if (item.col - SQR_SIZE) < coord[1] < item.col:
-                print("This is the color: ", item.color)
-
-                update_board(game, item.color)
 
 
 

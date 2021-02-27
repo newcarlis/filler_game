@@ -1,9 +1,10 @@
 """
 structure to represent the colored matrix used in the game
 """
+import random
 from dataclasses import dataclass
 from typing import Any
-import random
+# import game.displayer
 
 COLORS = ["#ffc700", "#7db954", "#fac4c4", "#ff284b", "#afddd5", "#ffb27b"]
 
@@ -163,5 +164,8 @@ def update_sqr(matrix: Matrix, sqr: Square) -> Matrix:
     row = sqr.row
     col = sqr.col
     matrix.board[row][col] = sqr
+    from game import displayer
+    displayer.update_sqr(matrix, sqr)
+
 
     return matrix

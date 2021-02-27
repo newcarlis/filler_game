@@ -2,6 +2,8 @@ import turtle
 
 from matrix_struct import *
 import displayer
+
+
 """
 this is the main game file that communicates with the user the handles the game logistics
 """
@@ -57,15 +59,6 @@ def won(game: Game) -> bool:
     return True
 
 
-def play(game: Game):
-    """
-    this is where the game starts and takes user input
-    :param game: the game being used
-    :return: TODO
-    """
-    turtle.onscreenclick(lambda x, y: displayer.accept_move((x, y), game))
-
-
 def update_board(game: Game, color: str):
 
     # start at the top left corner
@@ -73,9 +66,13 @@ def update_board(game: Game, color: str):
     start_y = 0
     board = game.matrix.board
 
-    check_adjacency(board[0][0], game.matrix, color)
+    matrix = check_adjacency(board[0][0], game.matrix, color)
+    for row in game.matrix.board:
+        print(row)
+    print("updated")
+    play(game)
+    return
 
-    # return False
 
 def gather_adj(matrix: Matrix, sqr: Square):
     adj = []  # list that will contain all of the adjacent squares
@@ -111,34 +108,86 @@ def check_adjacency(start: Square, matrix: Matrix, color: str):
     queue.append(start)
     start.active = True
     start.color = color
-    matrix = update_sqr(matrix, start)
-    # update on displayer
+    # update the matrix
+    # matrix = update_sqr(matrix, start)
+    turtle.speed(1)
     displayer.draw_square(start, matrix.size)
-    print(start)
 
-    # while len(queue) != 0:
-    #     curr_sqr = queue.pop(0)  # the current sqr to consider
-    #     adj_list = gather_adj(matrix, curr_sqr)  # gather the adj
-    #
-    #     # loop through the list of adjacencies
-    #     for adj in adj_list:
-    #
-    #         # active case
-    #         if adj.active:
-    #             # change color
-    #             adj.color = color
-    #             # update on board
-    #             matrix = update_sqr(matrix, adj)
-    #             # update on displayer
-    #             displayer.draw_square(adj, matrix.size-1)
+    while len(queue) != 0:
+        curr_sqr = queue.pop(0)  # the current sqr to consider
+        adj_list = gather_adj(matrix, curr_sqr)  # gather the adj
+
+        # loop through the list of adjacencies
+        for adj in adj_list:
+
+            # inactive case
+            if adj.active == False:
+                # an inactive sqr may match the new color
+                if adj.color == color:
+                    # colors match, just activate
+                    adj.active = True
+                    # add to queue
+                    queue.append(adj)
+
+            else:  # if active
+                if adj.color != color:
+                    # change color
+                    adj.color = color
+                    # update on board
+                    # matrix = update_sqr(matrix, adj)
+                    # add it to the queue
+                    displayer.draw_square(adj, matrix.size)
+                    queue.append(adj)
+    print("finish")
+    return matrix
+
+
+def accept_move(coord: tuple, game: Game):
+    """
+    accepts moves or 'clicks' from the user
+    verifies if the coord of the click corresponds with a color
+    :param coord: the coord of click from plater
+    :param color_map: the list containing the color locations
+    :return: color
+    """
+    turtle.onscreenclick(None)
+    color_map = game.color_map
+    color = ""
+    for item in color_map:
+        # if the x coord is within the first item
+        if item.row < coord[0] < (item.row + displayer.SQR_SIZE):
+            if (item.col - displayer.SQR_SIZE) < coord[1] < item.col:
+                print("This is the color: ", item.color)
+                color = item.color
+                break
+    update_board(game, color)
+    print("out")
+
+
+
+def play(game: Game):
+    """
+    this is where the game starts and takes user input
+    :param game: the game being used
+    :return: TODO
+    """
+
+    turtle.listen()
+    turtle.onscreenclick(lambda x, y:
+                         accept_move((x, y), game))
+
+
+
 
 
 def main():
     game = game_init()
     game = displayer.init(game)
+
+    # while not won(game):
     play(game)
 
-    turtle.done()
+    turtle.mainloop()
 
 
 if __name__ == '__main__':
