@@ -2,9 +2,9 @@ from position import Position
 
 class Tile:
 
-    def __init__(self, position, color: str, active = False):
+    def __init__(self, pos: Position, color: str, active = False):
         self.active = active
-        self._position = position
+        self._pos = pos
         self.color = color
 
     @property
@@ -16,26 +16,28 @@ class Tile:
         self._active = bool
 
     @property
-    def position(self):
-        return self.position
+    def pos(self):
+        return self._pos
 
-    @position.setter
-    def position(self, position: Position):
-        self._position = position
+    @pos.setter
+    def pos(self, pos: Position):
+        self._pos = pos
 
     @property
-    def color(self):
+    def color(self) -> str:
         return self._color
     
     @color.setter
     def color(self, color: str):
         self._color = color
 
-
+    def __str__(self) -> str:
+        return "Tile { \n pos: %s \n color: %s \n active: %s \n}"%(self.pos, self.color, self.active)
    
-tile = Tile(Position(1,1), "red")
-print(tile.__dict__)
-# print(tile.__dict__)
+    def __repr__(self):
+        return str(self.color)
+# tile = Tile(Position(1,1), "red")
+# print(tile)
 
 
     
