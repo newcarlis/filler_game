@@ -6,6 +6,14 @@ class Game:
         self.board = Board(size)
         self._player = Player(player)
 
+    def won(self) -> bool:
+        color = self.board[0][0]
+
+        for tile in self.board.__iter__():
+            if tile.color != color:
+                return False
+        
+        return True
 
 def terminal_mode():
     return
