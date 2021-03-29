@@ -54,3 +54,7 @@ class Board:
                 str_builder += repr(tile)
                 counter += 1
         return str_builder
+
+    def __repr__(self):
+        for tile in self.__iter__():
+            print(tile)

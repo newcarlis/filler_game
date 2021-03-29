@@ -6,7 +6,7 @@ class Tile:
     # TODO: modify tile position to be within board - not given
     def __init__(self, pos: Position):
         self.active = False
-        self._pos = pos
+        self.pos = pos
         self.color = color.get_color()
 
     @property
