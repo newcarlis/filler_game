@@ -20,6 +20,10 @@ class Board:
     def board(self):
         return self._board
 
+    @board.setter
+    def board(self, board):
+        self._board = board
+
     def __iter__(self):
         return chain.from_iterable(self.board)
 
@@ -35,3 +39,6 @@ class Board:
                 str_builder += repr(tile) + " "
                 counter += 1
         return str_builder
+
+b= Board(2)
+print(b)
