@@ -16,6 +16,10 @@ class Board:
     def size(self, size):
         self._size = size
 
+    @property
+    def board(self):
+        return self._board
+
     def __iter__(self):
         return chain.from_iterable(self.board)
 
@@ -31,10 +35,3 @@ class Board:
                 str_builder += repr(tile) + " "
                 counter += 1
         return str_builder
-
-
-b = Board(2)
-i = (b.__iter__())
-print(b)
-# for item in i:
-    # print(item)
