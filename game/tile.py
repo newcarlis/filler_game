@@ -1,11 +1,13 @@
 from position import Position
+import color
+from sty import fg, bg, ef, rs, Style, RgbBg
 
 class Tile:
-
-    def __init__(self, pos: Position, color: str, active = False):
-        self.active = active
+    # TODO: modify tile position to be within board - not given
+    def __init__(self, pos: Position):
+        self.active = False
         self._pos = pos
-        self.color = color
+        self.color = color.get_color()
 
     @property
     def active(self):
@@ -35,9 +37,8 @@ class Tile:
         return "Tile { \n pos: %s \n color: %s \n active: %s \n}"%(self.pos, self.color, self.active)
    
     def __repr__(self):
-        return str(self.color)
-# tile = Tile(Position(1,1), "red")
-# print(tile)
+        return str(bg(self.color[0], self.color[1], self.color[2]) + "  " + bg.rs)
+
 
 
     
