@@ -2,6 +2,10 @@ from enum import Enum
 import random
 
 class Color(Enum):
+    """
+    Enum class of colors
+    format: RGB
+    """
     RED = (161,60,55)
     GREEN = (180,204,110)
     YELLOW = (222,167,58)
@@ -11,6 +15,9 @@ class Color(Enum):
 
 
 def get_color() -> str:
+    """
+    generates a random color from the enum
+    """
     num = random.randint(0, len(Color) - 1)
     counter = 0
     color = ""
