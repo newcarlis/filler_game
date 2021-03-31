@@ -16,8 +16,8 @@ class Tile:
         color to give the Tile object
     """
     def __init__(self, pos: Position):
-        self.active = False
-        self.pos = pos
+        self._active = False
+        self._pos = pos
         self._color = get_color()
 
     @property
@@ -38,6 +38,8 @@ class Tile:
             what the set the attribute to true/false
         """
         self._active = active
+        print("activating " + str(self))
+
 
     @property
     def pos(self) -> Position:
@@ -75,6 +77,7 @@ class Tile:
         color: Color
             color to assign this tile
         """
+        print("setting the color")
         self._color = color
 
     def __str__(self) -> str:
@@ -82,15 +85,17 @@ class Tile:
         informal version of printing the tile
         shows all attributes for testing purposes
         """
-        return "Tile { \n pos: %s \n color: %s \n active: %s \n}"%(self.pos, self.color, self.active)
-   
+        # return "Tile { \n pos: %s \n color: %s \n active: %s \n}"%(self.pos, self.color, self.active)
+        return "tile at %s\n"%(self.pos)
+
     def __repr__(self) -> str:
         """
         formal version of printing tiles
         used in terminal version of game
         just displays color
         """
-        return str(bg(self.color[0], self.color[1], self.color[2]) + "  " + bg.rs)
+        color = self.color.value
+        return str(bg(color[0], color[1], color[2]) + "  " + bg.rs)
 
 
 
