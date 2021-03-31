@@ -1,3 +1,9 @@
 {
-    "discord.lowerDetailsEditing": ""
+    "discord.lowerDetailsEditing": "",
+    "discord.enabled": true,
+    "launch": {
+
+        "configurations": [],
+        "compounds": []
+    }
 }
