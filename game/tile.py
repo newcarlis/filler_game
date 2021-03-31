@@ -1,5 +1,5 @@
 from position import Position
-import color
+from color import Color, get_color
 from sty import fg, bg, ef, rs, Style, RgbBg
 
 class Tile:
@@ -18,7 +18,7 @@ class Tile:
     def __init__(self, pos: Position):
         self.active = False
         self.pos = pos
-        self.color = color.get_color()
+        self._color = get_color()
 
     @property
     def active(self) -> bool:

@@ -2,6 +2,7 @@ from tile import Tile
 import numpy as np
 from itertools import chain
 from position import Position
+from color import Color
 
 class Board:
     """
@@ -135,6 +136,13 @@ class Board:
         col = pos.y + 1
         return self.board[row][col]
 
+    def get_next(tile: Tile) -> tuple:
+        """
+        gets the adjacent objects to the one given
+        :param tile: object to find adjacents for
+        """
+        return (self.get_down(tile.pos), self.get_right(tile.pos))
+
     def __iter__(self) -> object:
         """
         returns iterable object of board
@@ -166,3 +174,7 @@ class Board:
         """
         for tile in self.__iter__():
             print(tile)
+
+b = Board(4)
+b.pop_board()
+print(repr(b))
