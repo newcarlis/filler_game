@@ -14,7 +14,7 @@ class Color(Enum):
     
 
 
-def get_color() -> str:
+def get_color() -> Color:
     """
     generates a random color from the enum
     """
@@ -23,9 +23,9 @@ def get_color() -> str:
     color = ""
     # print(num)
     for tone in Color:
-        # print(tone.value)
+        # print(tone)
         if counter == num:
-            color = tone.value
+            color = tone
             break
         else:
             counter += 1
