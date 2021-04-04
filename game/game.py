@@ -11,6 +11,8 @@ from pynput import keyboard
 
 COLR_MODE = "COLR"
 INIT_MODE = "INIT"
+MODE = "MODE"
+options = ["exit", "terminal", "window"]
 
 class Game:
     """
@@ -43,16 +45,17 @@ class Game:
         return True
 
 class Terminal(Game):
-    def __init__(self, mode = INIT_MODE, selection = 0):
+    def __init__(self, mode = MODE, selection = 0):
         self._mode = mode
         self.aceept_in = True
         self._selection = selection
         
     def finish_init(self):
         name = input("enter your name: ")
-        size = int(input('board dimension: '))
-        player = Player(name)
-        Game.__init__(self, size, player)
+        # size = int(input('board dimension: '))
+        # size = 4
+        # player = Player(name)
+        # Game.__init__(self, size, player)
 
     @property
     def mode(self):
@@ -69,13 +72,13 @@ class Terminal(Game):
 
     @selection.setter
     def selection(self, delta):
-        print("delta " + str(delta))
+        # print("delta " + str(delta))
         if (self._selection + delta) == -1 or (self.selection + delta) == 3:
-            print("selection " + str(self.selection) + " cannot be updated")
+            # print("selection " + str(self.selection) + " cannot be updated")
             return False
         else:
             self._selection+= delta
-            print(self.selection)
+            # print(self.selection)
             return True
 
     def clear(self):
@@ -91,6 +94,7 @@ class Terminal(Game):
         :param: n, number of lines
         """
         print("\033[" + str(n) + "A")
+
 
     def color_op(self, option = 0):
         colores = ""
@@ -113,22 +117,38 @@ class Terminal(Game):
             on_release= self.on_release
             ) as listener:
             listener.join()
+        return False
 
     def on_press(self, key):
         k = format(key)
 
-        if self.mode == INIT_MODE:
+        if self.mode == MODE:
+            prev = self.selection
             if k == "Key.down":
-                print("pressed down")
+                # print("pressed down")
                 self.selection = 1
+
             elif k == "Key.up":
-                print("pressed up")
+                # print("pressed up")
                 self.selection = -1
+
+            # elif k == "Key.enter":
+            #     if self.selection == 0:
+            #         exit()
+            #     if self.selection == 1:
+            #         self.del_n_lines(len(options) + 1)
+            #         self.finish_init()
+            #         self.mode = INIT_MODE
+            
+            # if there is a change, update the view
+            if prev != self.selection:
+                    self.del_n_lines(len(options) + 1)
+                    propmt_mode(self.selection)
         
 
     def on_release(slef, key):
         
-        if key == keyboard.Key.esc:
+        if key == keyboard.Key.enter:
             # Stop listener
             return False
 
@@ -154,20 +174,32 @@ def window_mode():
     return
 
 def propmt_mode(selector = 0):
-    options = ["exit", "terminal", "window"]
     mode = ""
+    sep = "\n"
     for i in range(len(options)):
+        if i == len(options) - 1:
+            sep = ""
         if i == selector:
             mode += "\u27A4  "
+        
         else:
             mode += "   "
-        mode += (options[i] + "\n")
+        mode += (options[i] + sep)
     print(mode)
 
 def main():
+    # name = input("enter your name: ")
+
     tempT = Terminal()
     propmt_mode()
     tempT.init_key_input()
+    tempT.finish_init()
+
+    # print("dghdshgdbgsnasnnrsnryn\ngsgsfgrhfbht\ngwrgragrg")
+
+    # print("\033[1;1f")
+    # print("\033[" + str(4) + "A")
+    # print(" \033[K")
     
 
 if __name__ == "__main__":
