@@ -43,15 +43,40 @@ class Game:
         return True
 
 class Terminal(Game):
-    def __init__(self, mode = INIT_MODE):
-        self.mode = mode
+    def __init__(self, mode = INIT_MODE, selection = 0):
+        self._mode = mode
         self.aceept_in = True
+        self._selection = selection
         
     def finish_init(self):
         name = input("enter your name: ")
         size = int(input('board dimension: '))
         player = Player(name)
         Game.__init__(self, size, player)
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @mode.setter
+    def mode(self, mode: str):
+        self._mode = mode
+
+    @property
+    def selection(self):
+        """ selection getter """
+        return self._selection
+
+    @selection.setter
+    def selection(self, delta):
+        print("delta " + str(delta))
+        if (self._selection + delta) == -1 or (self.selection + delta) == 3:
+            print("selection " + str(self.selection) + " cannot be updated")
+            return False
+        else:
+            self._selection+= delta
+            print(self.selection)
+            return True
 
     def clear(self):
         """
@@ -85,22 +110,27 @@ class Terminal(Game):
         with keyboard.Listener(
             on_press= (lambda key:
                 self.on_press(key)),
-            on_release=on_release
+            on_release= self.on_release
             ) as listener:
             listener.join()
 
     def on_press(self, key):
         k = format(key)
-        
+
         if self.mode == INIT_MODE:
-            print("taking initial input")
+            if k == "Key.down":
+                print("pressed down")
+                self.selection = 1
+            elif k == "Key.up":
+                print("pressed up")
+                self.selection = -1
         
 
-def on_release(key):
-    
-    if key == keyboard.Key.esc:
-        # Stop listener
-        return False
+    def on_release(slef, key):
+        
+        if key == keyboard.Key.esc:
+            # Stop listener
+            return False
 
     
 def terminal_mode():
@@ -135,9 +165,10 @@ def propmt_mode(selector = 0):
     print(mode)
 
 def main():
+    tempT = Terminal()
+    propmt_mode()
+    tempT.init_key_input()
     
-    prompt = propmt_mode()
-    input(prompt)
 
 if __name__ == "__main__":
     main()
