@@ -114,8 +114,9 @@ class Terminal(Game):
         with keyboard.Listener(
             on_press= (lambda key:
                 self.on_press(key)),
-            on_release= self.on_release
-            ) as listener:
+            on_release= (lambda key:
+                self.on_release(key)
+            )) as listener:
             listener.join()
         return False
 
@@ -132,13 +133,14 @@ class Terminal(Game):
                 # print("pressed up")
                 self.selection = -1
 
-            # elif k == "Key.enter":
-            #     if self.selection == 0:
-            #         exit()
-            #     if self.selection == 1:
+            elif k == "Key.enter":
+                if self.selection == 0:
+                    exit()
+                elif self.selection == 1:
             #         self.del_n_lines(len(options) + 1)
             #         self.finish_init()
-            #         self.mode = INIT_MODE
+                    self.mode = INIT_MODE
+                    
             
             # if there is a change, update the view
             if prev != self.selection:
@@ -148,6 +150,7 @@ class Terminal(Game):
 
     def on_release(slef, key):
         
+
         if key == keyboard.Key.enter:
             # Stop listener
             return False

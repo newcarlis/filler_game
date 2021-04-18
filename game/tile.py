@@ -38,7 +38,7 @@ class Tile:
             what the set the attribute to true/false
         """
         self._active = active
-        print("activating " + str(self))
+        # print("activating " + str(tile))
 
 
     @property
@@ -95,7 +95,7 @@ class Tile:
         just displays color
         """
         color = self.color.value
-        return str(bg(color[0], color[1], color[2]) + "  " + bg.rs)
+        return str(bg(color[0], color[1], color[2]) + "    " + bg.rs)
 
 
 

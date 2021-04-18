@@ -19,6 +19,7 @@ class Board:
     def __init__(self, size: int):
         self.size = size
         self.board = np.empty((size, size), dtype = Tile)
+        self.pop_board()
 
     @property
     def size(self) -> int:
@@ -201,7 +202,7 @@ class Board:
 
                 else: # active case - change to match
                     if next_tile.color != color:
-                        print("tile is active but not same color")
+                        # print("tile is active but not same color")
                         next_tile.color = color
                         #add to queue
                         queue.put(next_tile)
@@ -231,13 +232,17 @@ class Board:
         """
         counter = 0
         str_builder = ""
+        line = ""
         for tile in self.__iter__():
             if counter == self.size - 1:
-                str_builder += repr(tile)
-                str_builder += "\n"
+                line += repr(tile)
+                line += "\n"
+                str_builder += line
+                str_builder += line
+                line = ""
                 counter = 0
             else:
-                str_builder += repr(tile)
+                line += repr(tile)
                 counter += 1
         return str_builder
 
