@@ -21,7 +21,6 @@ def get_color() -> Color:
     num = random.randint(0, len(Color) - 1)
     counter = 0
     color = ""
-    # print(num)
     for tone in Color:
         # print(tone)
         if counter == num:
@@ -31,3 +30,17 @@ def get_color() -> Color:
             counter += 1
     
     return color
+
+def get_color_at_index(index: int) -> Color:
+    """
+    returns the color at a given index
+    """
+    counter = 0
+    for color in Color:
+        if counter == index:
+            return color
+
+        else:
+            counter += 1
+
+print(get_color_at_index(1))
