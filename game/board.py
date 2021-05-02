@@ -1,4 +1,5 @@
 from tile import Tile
+import tile
 import numpy as np
 from itertools import chain
 from position import Position
@@ -20,6 +21,7 @@ class Board:
         self.size = size
         self.board = np.empty((size, size), dtype = Tile)
         self.pop_board()
+        self.vertical_span = tile.HEIGHT * self.size
 
     @property
     def size(self) -> int:
@@ -196,13 +198,11 @@ class Board:
                     # innactive tile might match the color
                     if next_tile.color == color:
                         #activate and add to queue
-
                         next_tile.active = True
                         queue.put(next_tile)
 
                 else: # active case - change to match
                     if next_tile.color != color:
-
                         next_tile.color = color
                         #add to queue
                         queue.put(next_tile)

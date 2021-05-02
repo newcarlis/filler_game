@@ -37,6 +37,13 @@ class Game:
         self.board = Board(size)
         self._player = player
 
+    @property
+    def player(self) -> Player:
+        return self._player
+    
+    @player.setter
+    def player(self, player: Player):
+        self._player = player
     # TODO add player property
 
     def won(self) -> bool:
@@ -48,7 +55,7 @@ class Game:
         for tile in self.board.__iter__():
             if tile.color != color:
                 return False
-        
+        print("won")
         return True
 
 class Terminal(Game):
@@ -94,20 +101,19 @@ class Terminal(Game):
         """
         print("\033[" + str(n) + "C")
     
+    def goto(self, x: int, y: int):
+        print("\033[" + str(x) + ';' + str(y) + "f")
+
     def player_info(self, update: bool = False):
-        msg = "Player: " + self._player.name + "\tScore: " + str(self._player.score)
-        msg_len = len(msg)
-        if not update:
-            print(msg)
-        else:
+        """
+        updates the player info during the game
+        TODO: add params
+        """
+        if update:
             # move up by 1(color line) + 1(gap) + len(board) + 1(this line) in the end
-            # update score
-            # self.move_up_n_lines(self.board.size + 3)
-            # self.move_right_n_lines(msg_len - 2)
-
-            print("\033[" + str(7) + "F" + "\033[" + str(msg_len) + "C")
-
-            print("here" + str(self.board.size))
+            # + 1(compensate for print) then... update score
+            self.move_up_n_lines(self.board.vertical_span + 4)
+        print(self.player)
 
     def del_n_lines(self, n: int = 0):
         """
@@ -176,6 +182,7 @@ class Terminal(Game):
             elif key == "enter" and sel:
                 # update selected color
                 self.option = color.get_color_at_index(option)
+                self.player.score = 1
                 return 
 
             # TODO: all other cases and print invalid output
@@ -321,10 +328,13 @@ def terminal_mode(terminal):
     # set size and name properties
     game.finish_init(name, dim)
 
+    # update mode
+    update = False
+
     # main game loop
     while not game.won():
         # update player info
-        game.player_info()
+        game.player_info(update)
 
         # print the board
         print(repr(game.board))
@@ -335,8 +345,7 @@ def terminal_mode(terminal):
         # update the board
         game.board.update(game.option)
         # cleanup and reprint the board
-        game.player_info(update = True)
-        time.sleep(20)
+        update = True
 
 
 def window_mode():

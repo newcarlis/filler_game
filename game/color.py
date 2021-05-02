@@ -42,5 +42,3 @@ def get_color_at_index(index: int) -> Color:
 
         else:
             counter += 1
-
-print(get_color_at_index(1))

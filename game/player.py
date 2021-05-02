@@ -1,5 +1,7 @@
 
 class Player:
+
+
     """
     class representing a player with simple attributes
 
@@ -57,4 +59,4 @@ class Player:
         """
         returns string version of this player
         """
-        return "Player: " + str(self.name) + "\tscore: " + str(self.score)
+        return "Player: " + str(self.name) + "\tMoves: " + str(self.score)
