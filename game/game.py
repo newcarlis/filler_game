@@ -1,5 +1,6 @@
 import sys
 from color import Color
+import color
 from player import Player
 from board import Board
 from tile import Tile
@@ -52,10 +53,19 @@ class Game:
 
 class Terminal(Game):
     def __init__(self):
-        self._mode = ""
+        self.mode = ""
+        self.option = ""
         
     def finish_init(self, name: str, dim: int):
         super().__init__(dim, Player(name))
+
+    @property
+    def option(self) -> Color:
+        return self._option
+
+    @option.setter
+    def option(self, color: Color):
+        self._option = color
 
     @property
     def mode(self):
@@ -65,15 +75,39 @@ class Terminal(Game):
     def mode(self, mode: str):
         self._mode = mode
 
-    def player_info(self):
-        print("Player: " + self._player.name + "\tScore: " + str(self._player.score))
-
     def clear(self):
         """
         clears the entire terminal and
         and goes back to the top
         """
         print("\033[2J")
+
+    def move_up_n_lines(self, n: int):
+        """
+            moves the cursor up by n lines and back left
+        """
+        print("\033[" + str(n) + "F")
+
+    def move_right_n_lines(self, n: int):
+        """
+        moves to the right by n columns
+        """
+        print("\033[" + str(n) + "C")
+    
+    def player_info(self, update: bool = False):
+        msg = "Player: " + self._player.name + "\tScore: " + str(self._player.score)
+        msg_len = len(msg)
+        if not update:
+            print(msg)
+        else:
+            # move up by 1(color line) + 1(gap) + len(board) + 1(this line) in the end
+            # update score
+            # self.move_up_n_lines(self.board.size + 3)
+            # self.move_right_n_lines(msg_len - 2)
+
+            print("\033[" + str(7) + "F" + "\033[" + str(msg_len) + "C")
+
+            print("here" + str(self.board.size))
 
     def del_n_lines(self, n: int = 0):
         """
@@ -109,8 +143,8 @@ class Terminal(Game):
         option = 0
         show = True
         self.color_op(option)
-        maxi = len(Color) # amount of colors
-
+        maxi = len(Color) - 1 # amount of colors
+        sel = False
         while True:
             # read event and parse it
             event = keyboard.read_event(suppress = True)
@@ -125,6 +159,7 @@ class Terminal(Game):
                 else:
                     option -= 1
                     show = True
+                    sel = True
 
             elif tipo == "down" and key == "right":
                 if option >= maxi:
@@ -132,12 +167,16 @@ class Terminal(Game):
                     show = False
                 else:
                     option += 1
-                    show = True        
+                    show = True   
+                    sel = True
+
             elif key == "esc":
                 exit()
             
-            # elif key == "enter":
-                # return 
+            elif key == "enter" and sel:
+                # update selected color
+                self.option = color.get_color_at_index(option)
+                return 
 
             # TODO: all other cases and print invalid output
             if show:
@@ -288,20 +327,16 @@ def terminal_mode(terminal):
         game.player_info()
 
         # print the board
-        # print(repr(game.board))
+        print(repr(game.board))
 
-        # print the color options
+        # print the color options - selected color should be updated
         game.color_selector()
-        exit()
 
-        # get color input
-        # TODO: make function to take key input and change colors
-
-        # process input
-
-        # cleanup
-
-        # update view
+        # update the board
+        game.board.update(game.option)
+        # cleanup and reprint the board
+        game.player_info(update = True)
+        time.sleep(20)
 
 
 def window_mode():
