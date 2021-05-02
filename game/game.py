@@ -36,11 +36,13 @@ class Game:
         self.board = Board(size)
         self._player = player
 
+    # TODO add player property
+
     def won(self) -> bool:
         """
         determines if games has finished and player won
         """
-        color = self.board[0][0]
+        color = self.board.get_tile(Position(0,0)).color
 
         for tile in self.board.__iter__():
             if tile.color != color:
@@ -53,7 +55,7 @@ class Terminal(Game):
         self._mode = ""
         
     def finish_init(self, name: str, dim: int):
-        super().__init__(dim, name)
+        super().__init__(dim, Player(name))
 
     @property
     def mode(self):
@@ -62,6 +64,9 @@ class Terminal(Game):
     @mode.setter
     def mode(self, mode: str):
         self._mode = mode
+
+    def player_info(self):
+        print("Player: " + self._player.name + "\tScore: " + str(self._player.score))
 
     def clear(self):
         """
@@ -83,7 +88,7 @@ class Terminal(Game):
         # go back one more time to undo the '\n's
         print("\033[2A")
 
-    def color_op(self, option = 0):
+    def color_op(self, option):
         colores = ""
         counter = 0
         for tone in Color:
@@ -92,12 +97,57 @@ class Terminal(Game):
                 colores += (bg(color[0], color[1], color[2]) + " \u2573 " + bg.rs + "\t")
                 counter += 1
             else:
-                colores += (bg(color[0], color[1], color[2]) + "    " + bg.rs + "\t")
+                colores += (bg(color[0], color[1], color[2]) + "   " + bg.rs + "\t")
                 counter += 1
         
-        return colores
+        print(colores)
+
+    def color_selector(self):
+        """
+        allows user to move the cursor to select a color
+        """
+        option = 0
+        show = True
+        self.color_op(option)
+        maxi = len(Color) # amount of colors
+
+        while True:
+            # read event and parse it
+            event = keyboard.read_event(suppress = True)
+            tipo = event.event_type
+            key = event.name
+
+            # movement to the left
+            if tipo == "down" and key == "left":
+                if option <= 0:
+                    # no change
+                    show = False
+                else:
+                    option -= 1
+                    show = True
+
+            elif tipo == "down" and key == "right":
+                if option >= maxi:
+                    # no change
+                    show = False
+                else:
+                    option += 1
+                    show = True        
+            elif key == "esc":
+                exit()
+            
+            # elif key == "enter":
+                # return 
+
+            # TODO: all other cases and print invalid output
+            if show:
+                # cleanup
+                self.del_n_lines(1)
+                # reprint
+                self.color_op(option)
 
     def get_name(self):
+        # TODO error check the name so that is no longer than 8 ch
         name_mssg = "enter your user name: "
         name = input(name_mssg)
         return name
@@ -166,10 +216,9 @@ class Terminal(Game):
     def mode_selector(self):
         """
         allows the user to select the game mode
+        TODO: future update only updates the grid with the color
         """
         selection = 0
-        prev = 0
-        tipo = "down"
         show = True
         self.print_modes(selection)
         while True:
@@ -212,74 +261,6 @@ class Terminal(Game):
                 self.del_n_lines(len(options))
                 self.print_modes(selection)
 
-    def on_press(self, key):
-        
-        if self.mode == MODE:
-            prev = self.selection
-            if k == "down":
-                self.selection = 1
-
-            elif k == "up":
-                self.selection = -1
-
-            elif k == "enter":
-                if self.selection == 0:
-                    exit()
-                elif self.selection == 1:
-                    # this is the selection for te terminal mode
-                    self.mode = NAME_MODE
-                    print("terminal mode selected")
-            
-            # if there is a change, update the view to point to new option
-            if prev != self.selection:
-                    self.del_n_lines(len(options) + 1)
-                    prompt_mode(self.selection)
-        
-        elif self.mode == NAME_MODE:
-            pass
-            # if key == "backspace":
-            #     if self._temp_name != "":
-            #         self._temp_name = self._temp_name[:-1]
-            #         print("\033[K" + "\033[A")
-            #     print(self._temp_name + "\033[A")
-            # if key == "enter":
-            #     # finalize the user name
-            #     self.mode = DIM_MODE
-            #     self.get_dim()
-            # else:
-            #     letter = k.split("\'")[1]
-            #     if letter.isalnum():
-            #         self._temp_name += letter
-            #         print(self._temp_name + "\033[A")
-
-        elif self.mode == DIM_MODE:
-            pass
-            # if key == keyboard.Key.backspace:
-            #     if self._temp_name != "":
-            #         self._temp_name = self._temp_name[:-1]
-            #         print("\033[K" + "\033[A")
-            #     print(self._temp_name + "\033[A")
-            # if key == keyboard.Key.enter:
-            #     number = k.split("\'")[1]
-            #     if number.isnumeric():
-            #         number = int(number)
-            #         if number > 15:
-            #             self.del_n_lines(2)
-            #             print("That's too big! Try again.")
-            #             # mode remains the same
-            # else:
-            #     number = k.split("\'")[1]
-            #     if number.isnumeric():
-            #         number = int(number)
-            #         if number > 15:
-            #             self.del_n_lines(2)
-            #             print("That's too big! Try again.")
-            #             # mode remains the same
-            #         else:
-            #             self._temp_dim = int(str(self._temp_dim) + str(number))
-            #             print(str(self._temp_dim) + "\033[A")
-                
-    
 def terminal_mode(terminal):
     """
     starts a game with the terminal settings
@@ -301,6 +282,27 @@ def terminal_mode(terminal):
     # set size and name properties
     game.finish_init(name, dim)
 
+    # main game loop
+    while not game.won():
+        # update player info
+        game.player_info()
+
+        # print the board
+        # print(repr(game.board))
+
+        # print the color options
+        game.color_selector()
+        exit()
+
+        # get color input
+        # TODO: make function to take key input and change colors
+
+        # process input
+
+        # cleanup
+
+        # update view
+
 
 def window_mode():
     """
@@ -315,9 +317,7 @@ def window_mode():
 def main():
     terminal = Terminal()
     terminal.mode_selector()
-
-    if terminal.mode == NAME_MODE:
-        terminal_mode(terminal)
+    terminal_mode(terminal)
 
 if __name__ == "__main__":
     main()
