@@ -196,13 +196,13 @@ class Board:
                     # innactive tile might match the color
                     if next_tile.color == color:
                         #activate and add to queue
-                        print("inactive and same color")
+
                         next_tile.active = True
                         queue.put(next_tile)
 
                 else: # active case - change to match
                     if next_tile.color != color:
-                        # print("tile is active but not same color")
+
                         next_tile.color = color
                         #add to queue
                         queue.put(next_tile)
@@ -237,29 +237,10 @@ class Board:
             if counter == self.size - 1:
                 line += repr(tile)
                 line += "\n"
-                str_builder += line
-                str_builder += line
+                str_builder += (line*2)
                 line = ""
                 counter = 0
             else:
                 line += repr(tile)
                 counter += 1
         return str_builder
-
-# b = Board(4)
-# b.pop_board()
-# tile = b.get_tile(Position(0, 0))
-# print(repr(b))
-# print(tile)
-# adj = b.get_next(tile)
-# for t in adj:
-#     print(repr(t))
-# for t in adj:
-#     t.color = Color.RED
-# for t in adj:
-#     print(repr(t))
-
-
-
-# # b.pop_board()
-# print(repr(b))

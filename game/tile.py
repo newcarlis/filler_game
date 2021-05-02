@@ -2,6 +2,9 @@ from position import Position
 from color import Color, get_color
 from sty import fg, bg, ef, rs, Style, RgbBg
 
+WIDTH = 4
+HEIGHT = 2
+
 class Tile:
     """
     class that represents a tile on the game board
@@ -38,8 +41,6 @@ class Tile:
             what the set the attribute to true/false
         """
         self._active = active
-        # print("activating " + str(tile))
-
 
     @property
     def pos(self) -> Position:
@@ -77,7 +78,6 @@ class Tile:
         color: Color
             color to assign this tile
         """
-        print("setting the color")
         self._color = color
 
     def __str__(self) -> str:
@@ -95,8 +95,4 @@ class Tile:
         just displays color
         """
         color = self.color.value
-        return str(bg(color[0], color[1], color[2]) + "    " + bg.rs)
-
-
-
-    
+        return str(bg(color[0], color[1], color[2]) + (" "*WIDTH) + bg.rs)
