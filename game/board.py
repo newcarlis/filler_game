@@ -5,7 +5,7 @@ from itertools import chain
 from position import Position
 from color import Color
 from queue import Queue
-
+import logger
 class Board:
     """
     class that represents the board used in the game
@@ -43,7 +43,7 @@ class Board:
         self._size = size
 
     @property
-    def board(self) -> [[]]:
+    def board(self) -> list(list()):
         """
         getter for the board
         """
@@ -176,6 +176,7 @@ class Board:
         updates the board with the given color
         :param color: new color to update
         """
+        logger.log("Doing search")
         # start at the top left corner
         start = self.get_tile(Position(0, 0))
         start.color = color
@@ -184,7 +185,7 @@ class Board:
         changes = 0 # TODO
 
         # set up a queue and put starting tile
-        queue = Queue(maxsize = 3)
+        queue = Queue(maxsize = 4)
         queue.put(start)
 
         #BFS
@@ -206,7 +207,7 @@ class Board:
                         next_tile.color = color
                         #add to queue
                         queue.put(next_tile)
-
+        logger.log("finished search")
     def __iter__(self) -> object:
         """
         returns iterable object of board
