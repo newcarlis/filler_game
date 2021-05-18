@@ -53,9 +53,6 @@ finished search
 carly selected: YELLOW
 Doing search
 finished search
-carly selected: RED
-Doing search
-finished search
 carly selected: YELLOW
 Doing search
 finished search
