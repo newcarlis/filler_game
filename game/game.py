@@ -10,6 +10,7 @@ import time
 import re
 from sty import fg, bg, ef, rs, Style, RgbBg
 import keyboard
+import logger
 
 COLR_MODE = "COLR"
 INIT_MODE = "INIT"
@@ -54,13 +55,13 @@ class Game:
         for tile in self.board.__iter__():
             if tile.color != color:
                 return False
-        print("won")
         return True
 
 class Terminal(Game):
     def __init__(self):
         self.mode = ""
         self.option = ""
+        self.logger = logger
         
     def finish_init(self, name: str, dim: int):
         super().__init__(dim, Player(name))
@@ -201,6 +202,7 @@ class Terminal(Game):
                     # update selected color
                     self.option = color.get_color_at_index(option)
                     self.player.score = 1
+                    self.logger.log_color(self.option)
                     return 
 
                 else:
@@ -218,6 +220,8 @@ class Terminal(Game):
         # TODO fi xissue with hitting enter
         name_mssg = "enter your user name: "
         name = input(name_mssg)
+
+        self.logger.log_user(name)
         return name
     
     def get_dim(self):
@@ -235,7 +239,7 @@ class Terminal(Game):
 
                 if dim > 15:
                     raise ValueError
-
+                self.logger.log_dim(dim)
                 return dim
             except ValueError:
                 if dim > 15:
@@ -316,13 +320,13 @@ class Terminal(Game):
                 self.del_n_lines(len(options))
                 self.print_modes(selection)
 
-def terminal_mode(terminal):
+def terminal_mode(terminal: Terminal):
     """
     starts a game with the terminal settings
     @param terminal: the terminal game object
     """
     game = terminal
-    
+    game.logger.create_log('log.txt') # initialize log file
     # cleanup mode selection
     game.del_n_lines(len(options))
 
@@ -333,7 +337,7 @@ def terminal_mode(terminal):
     # get the dimensions and cleanup
     dim = game.get_dim()
     game.del_n_lines(1)
-
+    
     # set size and name properties
     game.finish_init(name, dim)
 
@@ -355,6 +359,14 @@ def terminal_mode(terminal):
         game.board.update(game.option)
         # cleanup and reprint the board
         update = True
+
+    if(game.won()):
+        # update player info one last time
+        game.player_info(update)
+
+        # print the board one last time
+        print(repr(game.board))
+        game.logger.log_win()
 
 
 def window_mode():
