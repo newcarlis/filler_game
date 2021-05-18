@@ -20,8 +20,16 @@ class Board:
     def __init__(self, size: int):
         self.size = size
         self.board = np.empty((size, size), dtype = Tile)
+
+        if size >= 13:
+            self.height = 1
+            self.width = 2
+        else:
+            self.height = 2
+            self.width = 4
+
+        self.vertical_span = self.height * self.size
         self.pop_board()
-        self.vertical_span = tile.HEIGHT * self.size
 
     @property
     def size(self) -> int:
@@ -69,7 +77,7 @@ class Board:
         col = 0
         for tile in self.__iter__():
             pos = Position(row, col)
-            self.board[row][col] = Tile(pos)
+            self.board[row][col] = Tile(pos, self.width)
             if col == self.size - 1:
                 row += 1
                 col = 0
@@ -185,7 +193,7 @@ class Board:
         changes = 0 # TODO
 
         # set up a queue and put starting tile
-        queue = Queue(maxsize = 4)
+        queue = Queue()
         queue.put(start)
 
         #BFS
@@ -238,7 +246,7 @@ class Board:
             if counter == self.size - 1:
                 line += repr(tile)
                 line += "\n"
-                str_builder += (line*2)
+                str_builder += (line * self.height)
                 line = ""
                 counter = 0
             else:

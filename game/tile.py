@@ -2,8 +2,6 @@ from position import Position
 from color import Color, get_color
 from sty import fg, bg, ef, rs, Style, RgbBg
 
-WIDTH = 4
-HEIGHT = 2
 
 class Tile:
     """
@@ -18,10 +16,11 @@ class Tile:
     color: Color
         color to give the Tile object
     """
-    def __init__(self, pos: Position):
+    def __init__(self, pos: Position, width : int = 4):
         self._active = False
         self._pos = pos
         self._color = get_color()
+        self.width = width
 
     @property
     def active(self) -> bool:
@@ -95,4 +94,4 @@ class Tile:
         just displays color
         """
         color = self.color.value
-        return str(bg(color[0], color[1], color[2]) + (" "*WIDTH) + bg.rs)
+        return str(bg(color[0], color[1], color[2]) + (" " * self.width) + bg.rs)

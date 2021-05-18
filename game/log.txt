@@ -1,5 +1,29 @@
 carly playing
-creating a 4x4 board
+creating a 14x14 board
+Doing search
+finished search
+carly selected: RED
+Doing search
+finished search
+carly selected: PURPLE
+Doing search
+finished search
+carly selected: RED
+Doing search
+finished search
+carly selected: PURPLE
+Doing search
+finished search
+carly selected: YELLOW
+Doing search
+finished search
+carly selected: GREEN
+Doing search
+finished search
+carly selected: PURPLE
+Doing search
+finished search
+carly selected: YELLOW
 Doing search
 finished search
 carly selected: PURPLE
@@ -11,13 +35,58 @@ finished search
 carly selected: RED
 Doing search
 finished search
+carly selected: GREEN
+Doing search
+finished search
 carly selected: YELLOW
+Doing search
+finished search
+carly selected: PURPLE
+Doing search
+finished search
+carly selected: BLUE
+Doing search
+finished search
+carly selected: GREEN
+Doing search
+finished search
+carly selected: YELLOW
+Doing search
+finished search
+carly selected: RED
+Doing search
+finished search
+carly selected: YELLOW
+Doing search
+finished search
+carly selected: PURPLE
+Doing search
+finished search
+carly selected: GREEN
+Doing search
+finished search
+carly selected: BLUE
+Doing search
+finished search
+carly selected: YELLOW
+Doing search
+finished search
+carly selected: RED
 Doing search
 finished search
 carly selected: GREEN
 Doing search
 finished search
 carly selected: PURPLE
+Doing search
+finished search
+carly selected: RED
+Doing search
+finished search
+carly selected: BLUE
+Doing search
+finished search
+carly selected: RED
 Doing search
 finished search
 carly selected: YELLOW

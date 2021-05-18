@@ -5,19 +5,14 @@ from player import Player
 from board import Board
 from tile import Tile
 from position import Position
-import curses
 import time
 import re
 from sty import fg, bg, ef, rs, Style, RgbBg
 import keyboard
 import logger
 
-COLR_MODE = "COLR"
-INIT_MODE = "INIT"
-NAME_MODE = "NAME"
+TERMINAL = "TERMINAL"
 WINDOW = "WINDOW"
-MODE = "MODE"
-DIM_MODE = "DIM"
 options = ["exit", "terminal", "window"]
 
 class Game:
@@ -59,7 +54,6 @@ class Game:
 
 class Terminal(Game):
     def __init__(self):
-        self.mode = ""
         self.option = ""
         self.logger = logger
         
@@ -73,14 +67,6 @@ class Terminal(Game):
     @option.setter
     def option(self, color: Color):
         self._option = color
-
-    @property
-    def mode(self):
-        return self._mode
-
-    @mode.setter
-    def mode(self, mode: str):
-        self._mode = mode
 
     def clear(self):
         """
@@ -272,7 +258,7 @@ class Terminal(Game):
             modes += (options[i] + sep)
         print(modes)
 
-    def mode_selector(self):
+    def mode_selector(self) -> str:
         """
         allows the user to select the game mode
         TODO: future update only updates the grid with the color
@@ -308,9 +294,9 @@ class Terminal(Game):
                     exit()
                 elif selection == 1:
                     # enable name mode
-                    self.mode = NAME_MODE
+                    return TERMINAL
                 elif selection == 2:
-                    self.mode = WINDOW
+                    return WINDOW
                 show = False
                 return
             elif tipo == "down" and key == "esc":
@@ -368,6 +354,8 @@ def terminal_mode(terminal: Terminal):
         print(repr(game.board))
         game.logger.log_win()
 
+        print("You won! You have completed a {d}x{d} board in {moves} moves!".format(d = dim, moves = game.player.score))
+
 
 def window_mode():
     """
@@ -377,12 +365,16 @@ def window_mode():
     ----------
     # TODO
     """
-    return
+    print("you have entered window mode")
 
 def main():
     terminal = Terminal()
-    terminal.mode_selector()
-    terminal_mode(terminal)
+    mode = terminal.mode_selector()
+
+    if mode == TERMINAL:
+        terminal_mode(terminal)
+    else:
+        window_mode()
 
 if __name__ == "__main__":
     main()
