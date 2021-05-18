@@ -86,7 +86,7 @@ class Tile:
         shows all attributes for testing purposes
         """
         # return "Tile { \n pos: %s \n color: %s \n active: %s \n}"%(self.pos, self.color, self.active)
-        return "tile at %s\n"%(self.pos)
+        return "tile at %s"%(self.pos)
 
     def __repr__(self) -> str:
         """

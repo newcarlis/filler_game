@@ -4,14 +4,15 @@ and logged for debugging puposes
 """
 
 import color
+import queue
 
 FILE = ""
 COLOR = "{user} selected: {color}"
 USER = "{user} playing"
 OUT = "{user} decided to exit"
-DIM = "creating board with {num} tiles"
+DIM = "creating a {num}x{num} board"
 NAME = ""
-
+WIN = "{user} has won!"
 def create_log(name: str = 'log.txt'):
     """
     initializes the log file
@@ -48,3 +49,15 @@ def log_user(name: str):
 def log_exit():
     log(OUT.format(user = NAME))
 
+def log_win():
+    log(WIN.format(user = NAME))
+
+def log_queue(q: queue.Queue):
+    s = "state of the queue: "
+    s += str(q.qsize())
+    s += "\n"
+
+    for t in q.queue:
+        s += "\t" + str(t) + "\n"
+    
+    log(s)

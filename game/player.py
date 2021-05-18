@@ -1,7 +1,6 @@
 
 class Player:
 
-
     """
     class representing a player with simple attributes
 
