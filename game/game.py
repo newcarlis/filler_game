@@ -44,7 +44,6 @@ class Game:
     @player.setter
     def player(self, player: Player):
         self._player = player
-    # TODO add player property
 
     def won(self) -> bool:
         """
@@ -104,17 +103,6 @@ class Terminal(Game):
     def goto(self, x: int, y: int):
         print("\033[" + str(x) + ';' + str(y) + "f")
 
-    def player_info(self, update: bool = False):
-        """
-        updates the player info during the game
-        TODO: add params
-        """
-        if update:
-            # move up by 1(color line) + 1(gap) + len(board) + 1(this line) in the end
-            # + 1(compensate for print) then... update score
-            self.move_up_n_lines(self.board.vertical_span + 4)
-        print(self.player)
-
     def del_n_lines(self, n: int = 0):
         """
         deletes n number of lines from the terminal
@@ -127,6 +115,35 @@ class Terminal(Game):
         print(string)
         # go back one more time to undo the '\n's
         print("\033[2A")
+
+    def loading(self, message: str):
+        const = ". . . . . "
+        message = message + const
+        print(message)
+
+        for i in range(5):
+            # sleep
+            time.sleep(1)
+            # remove a dot form message
+            message = message[:-2]
+            # go up and to the start and reprint message
+            self.del_n_lines(1)
+            print(message)
+        time.sleep(1)
+        # at the end rewrite main prompt
+
+        self.del_n_lines(2)
+
+    def player_info(self, update: bool = False):
+        """
+        updates the player info during the game
+        @param update: tells if the label is being updated
+        """
+        if update:
+            # move up by 1(color line) + 1(gap) + len(board) + 1(this line) in the end
+            # + 1(compensate for print) then... update score
+            self.move_up_n_lines(self.board.vertical_span + 4)
+        print(self.player)
 
     def color_op(self, option):
         colores = ""
@@ -156,44 +173,49 @@ class Terminal(Game):
             event = keyboard.read_event(suppress = True)
             tipo = event.event_type
             key = event.name
-
-            # movement to the left
-            if tipo == "down" and key == "left":
-                if option <= 0:
-                    # no change
-                    show = False
-                else:
-                    option -= 1
-                    show = True
-                    sel = True
-
-            elif tipo == "down" and key == "right":
-                if option >= maxi:
-                    # no change
-                    show = False
-                else:
-                    option += 1
-                    show = True   
-                    sel = True
-
-            elif key == "esc":
-                exit()
             
-            elif key == "enter" and sel:
-                # update selected color
-                self.option = color.get_color_at_index(option)
-                self.player.score = 1
-                return 
+            if tipo == "down":
+                # movement to the left
+                if tipo == "down" and key == "left":
+                    if option <= 0:
+                        # no change
+                        show = False
+                    else:
+                        option -= 1
+                        show = True
+                        sel = True
 
-            # TODO: all other cases and print invalid output
-            if show:
-                # cleanup
-                self.del_n_lines(1)
-                # reprint
-                self.color_op(option)
+                elif tipo == "down" and key == "right":
+                    if option >= maxi:
+                        # no change
+                        show = False
+                    else:
+                        option += 1
+                        show = True   
+                        sel = True
+
+                elif key == "esc":
+                    exit()
+                
+                elif key == "enter":
+                    # update selected color
+                    self.option = color.get_color_at_index(option)
+                    self.player.score = 1
+                    return 
+
+                else:
+                    message = "Incorrect key. Use arrow keys to select color"
+                    self.loading(message)
+                    continue
+                if show:
+                    # cleanup
+                    self.del_n_lines(1)
+                    # reprint
+                    self.color_op(option)
 
     def get_name(self):
         # TODO error check the name so that is no longer than 8 ch
+        # TODO fi xissue with hitting enter
         name_mssg = "enter your user name: "
         name = input(name_mssg)
         return name
@@ -217,24 +239,11 @@ class Terminal(Game):
                 return dim
             except ValueError:
                 if dim > 15:
-                    error = str(dim) + " is too big. Try a smaller number. . . . . "
+                    error = str(dim) + " is too big. Try a smaller number"
                 else:
-                    error = str(answer) + " is not valid. Try again. . . . . "
+                    error = str(answer) + " is not valid. Try again"
 
-                print(error)
-
-                for i in range(5):
-                    # sleep
-                    time.sleep(1)
-                    # remove a dot form error message
-                    error = error[:-2]
-                    # go up and to the start and reprint new error message
-                    self.del_n_lines(1)
-                    print(error)
-                time.sleep(1)
-                # at the end rewrite main prompt
-
-                self.del_n_lines(2)
+                self.loading(error)
                 continue
 
     def esc_mssg(self):
