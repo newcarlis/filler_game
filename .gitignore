@@ -1,3 +1,5 @@
 __pycache__
 .vscode
-game/log.txt
+game/Logs
+game/test.py
+game/logger.py
