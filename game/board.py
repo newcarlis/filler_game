@@ -8,14 +8,14 @@ from queue import Queue
 import logger
 class Board:
     """
-    class that represents the board used in the game
+        class that represents the board used in the game
 
-    >> Attributes
-    -------------
-    size: int
-        the size to give the board
-    board: [[Tile]]
-        2D array containing the tiles of the game
+        >> Attributes
+        -------------
+        size: int
+            the size to give the board
+        board: [[Tile]]
+            2D array containing the tiles of the game
     """
     def __init__(self, size: int):
         self.size = size
@@ -165,7 +165,7 @@ class Board:
             lst.append(left)
         return lst
 
-    def get_tile(self, pos: Position):
+    def get_tile(self, pos: Position) -> Tile:
         return self.board[pos.x][pos.y]
 
     def set_actives(self) -> None:
@@ -188,9 +188,6 @@ class Board:
         # start at the top left corner
         start = self.get_tile(Position(0, 0))
         start.color = color
-
-        # keep track of changes
-        changes = 0 # TODO
 
         # set up a queue and put starting tile
         queue = Queue()
@@ -215,7 +212,7 @@ class Board:
                         next_tile.color = color
                         #add to queue
                         queue.put(next_tile)
-        logger.log("finished search")
+    
     def __iter__(self) -> object:
         """
         returns iterable object of board
