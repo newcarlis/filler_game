@@ -6,6 +6,7 @@ from position import Position
 from color import Color
 from queue import Queue
 import logger
+
 class Board:
     """
         class that represents the board used in the game

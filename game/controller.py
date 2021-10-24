@@ -9,6 +9,7 @@ import time
 import re
 from sty import fg, bg, ef, rs, Style, RgbBg
 from terminal import Terminal
+from window import Window
 
 TERMINAL = "TERMINAL"
 WINDOW = "WINDOW"
@@ -17,54 +18,53 @@ options = ["exit", "terminal", "window"]
 
 def terminal_mode(terminal: Terminal):
     """
-    starts a game with the terminal settings
+    starts a game with the terminal environment
     @param terminal: the terminal game object
     """
-    game = terminal
+    
     # cleanup mode selection
     Terminal.clear()
 
     # get the name of the user and cleanup (1 line max)
-    name = game.get_name()
-    game.del_n_lines(1)
+    name = terminal.get_name()
+    terminal.del_n_lines(1)
 
     # get the dimensions and cleanup
-    dim = game.get_dim(name)
-    game.del_n_lines(1)
+    dim = terminal.get_dim(name)
+    terminal.del_n_lines(1)
     
     # set size and name properties
-    game.finish_init(name, dim)
+    terminal.finish_init(name, dim)
 
     # update mode
     update = False
 
     # main game loop
-    while not game.won():
+    while not terminal.game.won():
         # update player info
-        game.player_info()
+        terminal.player_info()
 
         # print the board
-        print(repr(game.board))
+        print(repr(terminal.game.board))
 
         # store the old color option
-        old_option = game.option
+        old_option = terminal.option
 
         # print the color options - selected color should be updated
-        game.color_selector()
+        terminal.color_selector()
 
         # update the board with selection made
-        game.board.update(game.option)
+        terminal.game.board.update(terminal.option)
         # cleanup and reprint the board
 
-    if(game.won()):
+    if(terminal.game.won()):
         # update player info one last time
-        game.player_info()
+        terminal.player_info()
 
         # print the board one last time
-        print(repr(game.board))
+        print(repr(terminal.game.board))
 
-        print("You won! You have completed a {d}x{d} board in {moves} moves!".format(d = dim, moves = game.player.score))
-
+        print("You won! You have completed a {d}x{d} board in {moves} moves!".format(d = dim, moves = terminal.game.player.score))
 
 def window_mode():
     """
@@ -75,6 +75,8 @@ def window_mode():
     # TODO
     """
     print("you have entered window mode")
+    window = Window()
+    window.start()
 
 def main():
     terminal = Terminal()

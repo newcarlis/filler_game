@@ -11,8 +11,6 @@ class Color(Enum):
     YELLOW = (222,167,58)
     PURPLE = (107,53,184)
     BLUE = (50,146,173)
-    
-
 
 def get_color() -> Color:
     """
@@ -30,6 +28,12 @@ def get_color() -> Color:
             counter += 1
     
     return color
+
+def get_hex_color() -> Color:
+    """
+        translates an rgb tuple of int to a tkinter friendly color code
+    """
+    return "#%02x%02x%02x" % get_color().value
 
 def get_color_at_index(index: int) -> Color:
     """

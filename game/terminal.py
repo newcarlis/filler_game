@@ -16,16 +16,14 @@ options = ["exit", "terminal", "window"]
 TERMINAL = "TERMINAL"
 WINDOW = "WINDOW"
 
-class Terminal(Game):
-    def __init__(self, size: int = 0, player: Player = " "):
+class Terminal():
+    def __init__(self):
         self.option = ""
-        # self.size = 0
-        # self.Player = None
+        self.game = object
 
     def finish_init(self, name: str, dim: int):
-        self.size = dim
-        super().__init__(self.size, Player(name))
-        self._option = self.board.get_tile(Position(0, 0)).color
+        self.game = Game(dim, Player(name))
+        self._option = self.game.board.get_tile(Position(0, 0)).color
 
     @property
     def option(self) -> Color:
@@ -36,8 +34,8 @@ class Terminal(Game):
         self._option = color
 
     def player_info(self):
-        Terminal.up_n_lines((self.size * 2) + 3)
-        print(str(self.player) + "    ")
+        Terminal.up_n_lines((self.game.size * 2) + 3)
+        print(str(self.game.player) + "    ")
 
     @staticmethod
     def clear():
@@ -137,7 +135,7 @@ class Terminal(Game):
 
                     if self.option != new_color:
                         self.option = new_color
-                        self.player.score = 1
+                        self.game.player.score = 1
                     return 
 
                 else:
@@ -152,11 +150,11 @@ class Terminal(Game):
     def get_name():
         # TODO error check the name so that is no longer than 8 ch
         # TODO fi xissue with hitting enter
-        name_mssg = "enter your user name: "
+        name_msg = "enter your user name: "
 
         while True:
             try:
-                name = input(name_mssg)
+                name = input(name_msg)
 
                 if len(name) < 2 or len(name) > 16:
                     raise NameLengthError(name)
@@ -173,10 +171,10 @@ class Terminal(Game):
         sets the dimensions for board
         """
 
-        dim_mssg = "{n}, enter board dimensions (4 - 15): ".format(n=name)
+        dim_msg = "{n}, enter board dimensions (4 - 15): ".format(n=name)
         
         while True:
-            answer = input(dim_mssg)
+            answer = input(dim_msg)
             dim = 0
             try:
                 dim = int(answer)
@@ -190,7 +188,7 @@ class Terminal(Game):
                 continue
 
     @staticmethod
-    def esc_mssg():
+    def esc_msg():
         print("press 'esc' to exit game any time.")
 
     @staticmethod

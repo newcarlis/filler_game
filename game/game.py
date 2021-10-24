@@ -22,15 +22,16 @@ class Game:
         size of the game board
     """
     def __init__(self, size: int, player: Player):
+        self.size = size
         self.board = Board(size)
-        self._player = player
+        self.player = player
 
     @property
     def player(self) -> Player:
         return self._player
      
     @player.setter
-    def player(self, player:Player):
+    def player(self, player: Player):
         self._player = player
 
     def won(self) -> bool:
