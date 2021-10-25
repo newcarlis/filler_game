@@ -1,5 +1,6 @@
 from enum import Enum
 import random
+from random import sample
 
 class Color(Enum):
     """
@@ -29,11 +30,16 @@ def get_color() -> Color:
     
     return color
 
-def get_hex_color() -> Color:
+def get_hex_color(n: int) -> Color:
     """
         translates an rgb tuple of int to a tkinter friendly color code
     """
-    return "#%02x%02x%02x" % get_color().value
+    colors = []
+
+    for color in Color:
+        colors.append("#%02x%02x%02x" % color.value)
+
+    return sample(colors, k = n)
 
 def get_color_at_index(index: int) -> Color:
     """

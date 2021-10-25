@@ -1,31 +1,23 @@
-from os import system
-import keyboard
-import sys
+from tkinter import *
+from tkinter import font
 
-import time
 
-uni = "\u27A4"
-print("hello")
-print("hello")
-print("hello")
-print()
+root = Tk()
+root.title('Font Families')
+fonts=list(font.families())
+fonts.sort()
 
-time.sleep(5)
-# system("cls")
-for i in range(2):
-    # sys.stdout.write("\033[F")
-    # print("\033[F")
-    sys.stdout.write("\033[F")
-    # sys.stdout.write("\033[K")
-print(uni)
+display = Listbox(root)
+display.pack(fill=BOTH, expand=YES, side=LEFT)
 
-time.sleep(5)
-for i in range(1):
-    # sys.stdout.write("\033[F")
-    # print("\033[F")
-    sys.stdout.write("\033[F")
-    # sys.stdout.write("\033[K")
-# print("hola")
-sys.stdout.write("a")
-print("\033[A")
+scroll = Scrollbar(root)
+scroll.pack(side=RIGHT, fill=Y, expand=NO)
 
+scroll.configure(command=display.yview)
+display.configure(yscrollcommand=scroll.set)
+
+for item in fonts:
+    print(item)
+    display.insert(END, Label(text=item, font=(item, 15)))
+
+root.mainloop()
