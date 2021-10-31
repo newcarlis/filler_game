@@ -10,6 +10,7 @@ class Window():
         self.dec_dim = int(self.dim * 0.04)
         self.window = Tk()
         self.game = object
+        self.window.resizable(False, False)
 
     @staticmethod
     def import_fonts():
@@ -65,29 +66,25 @@ class Window():
         menu = Frame(self.window, width = 200, height = 200, padx = px, pady = py).place(x = margin, y = margin + self.dec_dim)
 
         colors = get_hex_color(3)
-        play_frame = Button(menu, text = "", width = 2, height = 1, bg = colors[0], borderwidth=0).place(x = idx, y = idy)
+        play = Button(menu, width = 2, height = 1, bg = colors[0], borderwidth=0, command = self.open_intro)
+        play.place(x = idx, y = idy)
+
+        # play.bind('<Enter>', play.config(background='black'))
+
         idy += y_incre
-        HTP_frame = Button(menu, width = 2, height = 1, bg = colors[1], borderwidth=0).place(x = idx, y = idy)
+        HTP = Button(menu, width = 2, height = 1, bg = colors[1], borderwidth=0, command= self.HTP).place(x = idx, y = idy)
         idy += y_incre
-        exit_frame = Button(menu, width = 2, height = 1, bg = colors[2], borderwidth=0).place(x = idx, y = idy)
+        exit = Button(menu, width = 2, height = 1, bg = colors[2], borderwidth=0, command=self.window.destroy).place(x = idx, y = idy)
 
         # resets the y index value to place first button | sets x index
         idy = init_y
         idx = x_labels
 
-        play = Label(menu, text="    Play   ", font = ("canyon", 15)).place(x = idx, y = idy)
+        play_label = Label(menu, text="    Play   ", font = ("canyon", 15)).place(x = idx, y = idy)
         idy += y_incre
-        HTP = Label(menu, text="How to Play", font = ("canyon", 15)).place(x = idx, y = idy)
+        HTP_label= Label(menu, text="How to Play", font = ("canyon", 15)).place(x = idx, y = idy)
         idy += y_incre
-        exit = Label(menu, text="    Exit   ", font = ("canyon", 15)).place(x = idx, y = idy)
-
-        # play_frame.pack()
-        # HTP_frame.pack()
-        # exit_frame.pack()
-
-        # play.pack()
-        # HTP.pack()
-        # exit.pack()
+        exit_label = Label(menu, text="    Exit   ", font = ("canyon", 15)).place(x = idx, y = idy)
 
         return menu
 
@@ -107,10 +104,65 @@ class Window():
         intro_label.pack(anchor=NE, padx = (0, left_margin))
 
         self.get_menu(left_margin)
-
         self.window.mainloop()
 
+    def clear(self):
+        for widget in self.window.winfo_children():
+            widget.destroy()
 
+    def back_to_start(self):
+        self.clear()
+        self.start()
 
+    def open_intro(self):
+        self.clear()
+        self.window.geometry("500x300")
 
+        profile = Label(self.window, text="Game Info", font = ("atmosphere", 32))
+        profile.pack(side=TOP)
+
+        num_of_tiles = self.dim // self.dec_dim
+        x = 0
+        y = 50
+        for i in range(num_of_tiles):
+            temp = Frame(self.window, width = self.dec_dim, height = self.dec_dim, bg = get_hex_color(1), pady = 10).place(x = x, y = y)
+            x += self.dec_dim
+
+        name = Label(self.window, text="Username", font = ("cayon", 15)).place(x = 125, y = 120)
+        name_box = Entry(self.window).place(x = 230, y = 125)
+
+        grid_size = Label(self.window, text = 'Grid Size', font=("cayon", 15)).place(x = 125, y = 170)
+        grid_box = Entry(self.window).place(x = 230, y = 175)
+
+        enter = Button(self.window, width = 6, height = 1, text = "Next", font = ("cayon", 12), bg = "#b4cc6e", fg = "white", borderwidth=0).place(x=400, y=240)
+        back = Button(self.window, width = 6, height = 1, text = "Back", font = ("cayon", 12), bg = "#a13c37", fg = "white", borderwidth=0, command=self.back_to_start).place(x=40, y=240)
+
+        x = 0
+        y = 300 - self.dec_dim
+        for i in range(num_of_tiles):
+            temp = Frame(self.window, width = self.dec_dim, height = self.dec_dim, bg = get_hex_color(1), pady = 10).place(x = x, y = y)
+            x += self.dec_dim
+
+    def HTP(self):
+
+        self.clear()
+        self.window.geometry("500x500")
+
+        txt = Label(self.window, text="How to Play", font = ("atmosphere", 32))
+        txt.pack(side=TOP)
+
+        num_of_tiles = self.dim // self.dec_dim
+        x = 0
+        y = 50
+        for i in range(num_of_tiles):
+            temp = Frame(self.window, width = self.dec_dim, height = self.dec_dim, bg = get_hex_color(1), pady = 10).place(x = x, y = y)
+            x += self.dec_dim
+
+        back = Button(self.window, width = 6, height = 1, text = "Back", font = ("cayon", 12), bg = "#a13c37", fg = "white", borderwidth=0, command=self.back_to_start).place(x=40, y=440)
+
+        x = 0
+        y = 500 - self.dec_dim
+        for i in range(num_of_tiles):
+            temp = Frame(self.window, width = self.dec_dim, height = self.dec_dim, bg = get_hex_color(1), pady = 10).place(x = x, y = y)
+            x += self.dec_dim
 
