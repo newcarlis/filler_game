@@ -1,6 +1,5 @@
 from enum import Enum
-import random
-from random import sample
+import secrets
 
 class Color(Enum):
     """
@@ -17,7 +16,7 @@ def get_color() -> Color:
     """
     generates a random color from the enum
     """
-    num = random.randint(0, len(Color) - 1)
+    num = secrets.SystemRandom().randint(0, len(Color) - 1)
     counter = 0
     color = ""
     for tone in Color:
@@ -39,7 +38,7 @@ def get_hex_color(n: int) -> Color:
     for color in Color:
         colors.append("#%02x%02x%02x" % color.value)
 
-    return sample(colors, k = n)
+    return secrets.SystemRandom().sample(colors, k = n)
 
 def get_color_at_index(index: int) -> Color:
     """
